@@ -7,8 +7,11 @@
     "dev:web": "pnpm --filter @beyond-classics/web dev",
     "dev:api": "pnpm --filter @beyond-classics/api dev",
     "build": "pnpm --recursive run build",
+    "build:web": "pnpm --filter @beyond-classics/web build",
     "typecheck": "pnpm --recursive run typecheck",
     "deploy:api": "cross-env HTTP_PROXY=http://127.0.0.1:7890 HTTPS_PROXY=http://127.0.0.1:7890 wrangler deploy --config apps/api/wrangler.jsonc",
+    "deploy:web": "pnpm run build:web && cross-env HTTP_PROXY=http://127.0.0.1:7890 HTTPS_PROXY=http://127.0.0.1:7890 wrangler pages deploy apps/web/out --project-name=beyond-the-endless-classics-web --commit-dirty=true",
+    "deploy": "pnpm run deploy:api && pnpm run deploy:web",
     "db:migrate:local": "wrangler d1 migrations apply beyond-classics-db --local",
     "db:migrate:remote": "cross-env HTTP_PROXY=http://127.0.0.1:7890 HTTPS_PROXY=http://127.0.0.1:7890 wrangler d1 migrations apply beyond-classics-db --remote",
     "db:query:remote": "cross-env HTTP_PROXY=http://127.0.0.1:7890 HTTPS_PROXY=http://127.0.0.1:7890 wrangler d1 execute beyond-classics-db --remote"
