@@ -49,20 +49,25 @@ export default function HomePage() {
       )}
 
       {/* 顶部素雅题签 */}
-      <header className="relative z-40 px-10 py-5 flex items-center justify-between border-b border-paper-wash/60 bg-paper-raw/90 backdrop-blur-md shadow-xs">
+      <header className="relative z-40 px-8 py-4.5 flex items-center justify-between border-b border-paper-wash/60 bg-paper-raw/90 backdrop-blur-md shadow-xs">
         <div className="flex items-center gap-4">
-          <div className="seal-solid px-2 py-1 text-xs font-brush rounded-xs shadow-seal">
-            文止观不止
+          <div className="seal-solid px-2.5 py-1 text-xs font-brush rounded-xs shadow-seal tracking-widest">
+            观不止
           </div>
-          <div className="text-xl font-bold font-song tracking-[0.25em] text-ink-burnt">
-            华夏先贤 · 交互式水墨短剧
+          <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4">
+            <h1 className="text-2xl font-bold font-song tracking-[0.25em] text-ink-burnt">
+              古文观不止
+            </h1>
+            <span className="text-xs font-archaic text-ink-light tracking-[0.18em]">
+              文止于此，人观不止。
+            </span>
           </div>
         </div>
-        <div className="flex items-center gap-4 text-xs font-archaic text-ink-light">
+        <div className="flex items-center gap-3 text-xs font-archaic text-ink-light hidden md:flex">
           <span className="seal-box px-2 py-0.5 font-brush border-cinnabar text-cinnabar">
-            剧场模式
+            先贤剧场
           </span>
-          <span>从文章到生命 · 沉浸式时空入戏</span>
+          <span>以先贤为宇宙 · 沉浸式时空入戏</span>
         </div>
       </header>
 

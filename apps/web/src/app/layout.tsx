@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import '../styles/globals.css';
 
 export const metadata: Metadata = {
-  title: '古文观止 · 观不止 - 华夏先贤交互式水墨短剧',
+  title: '古文观不止 - 文止于此，人观不止',
   description: '文止于此，人观不止。超越文本，以先贤为宇宙，沉浸式经历千古名作背后的生命史诗。',
 };
 
