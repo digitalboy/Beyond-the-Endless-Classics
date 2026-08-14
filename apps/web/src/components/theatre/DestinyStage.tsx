@@ -1,6 +1,8 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import type { Article } from '@beyond-classics/types';
+import { fetchArticlesFromCloud } from '@/lib/api-client';
 
 interface DestinyStageProps {
   sageId: string;
@@ -47,12 +49,27 @@ const dramaStories = [
 ];
 
 export const DestinyStage: React.FC<DestinyStageProps> = ({
-  sageId: _sageId,
+  sageId,
   onBack,
   onSelectArticle,
 }) => {
   const [activeNode, setActiveNode] = useState(3); // 默认黄州突围
+  const [cloudArticles, setCloudArticles] = useState<Article[]>([]);
+  const [loadingArticles, setLoadingArticles] = useState(true);
+
   const currentStory = dramaStories[activeNode];
+
+  useEffect(() => {
+    async function loadArticles() {
+      setLoadingArticles(true);
+      const list = await fetchArticlesFromCloud(sageId);
+      if (list && list.length > 0) {
+        setCloudArticles(list);
+      }
+      setLoadingArticles(false);
+    }
+    loadArticles();
+  }, [sageId]);
 
   return (
     <section className="flex-1 flex flex-col px-8 py-6 max-w-6xl w-full mx-auto relative z-20 animate-cinematic">
@@ -165,13 +182,13 @@ export const DestinyStage: React.FC<DestinyStageProps> = ({
         </div>
       </div>
 
-      {/* 第三幕：当年手札破墨飞入 */}
+      {/* 第三幕：当年手札破墨飞入 (实时直连云端 D1 篇目) */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="seal-solid px-2 py-0.5 text-xs font-brush">第三幕</div>
             <h3 className="text-lg font-bold font-song text-[#fbf6ed] tracking-widest">
-              黄州时空 · 当年散落之手泽信札 (3 篇名作)
+              当年散落之手泽信札 (云端 D1 数据库实时直连)
             </h3>
           </div>
           <span className="text-xs font-archaic text-paper-wash">
@@ -180,101 +197,46 @@ export const DestinyStage: React.FC<DestinyStageProps> = ({
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* 手札 1: 前赤壁赋 */}
-          <div
-            onClick={() => onSelectArticle('chibifu-qian')}
-            className="group cursor-pointer bg-[#fbf6ed] hover:bg-[#fffdfa] text-ink-burnt p-7 rounded-2xl border-2 border-paper-wash hover:border-cinnabar shadow-theatre hover:-translate-y-2 transition-all duration-500 relative flex flex-col justify-between overflow-hidden"
-          >
-            <div>
-              <div className="flex items-center justify-between border-b border-paper-wash/80 pb-3 mb-3">
-                <span className="text-xs font-archaic text-cinnabar">
-                  宋神宗元丰五年七月既望 · 赋
-                </span>
-                <span className="seal-solid px-2 py-0.5 text-[10px] font-brush">
-                  千古神品
-                </span>
-              </div>
-              <h4 className="text-2xl font-bold font-song text-ink-burnt group-hover:text-cinnabar transition tracking-[0.2em]">
-                前赤壁赋
-              </h4>
-              <p className="text-xs font-archaic text-ink-light mt-1">
-                作于黄州赤鼻矶夜泛舟之时
-              </p>
-              <div className="mt-4 p-3.5 rounded-lg bg-paper-cooked/60 border border-paper-wash/60 text-xs font-song leading-relaxed text-ink-thick">
-                “逝者如斯，而未尝往也；盈虚者如彼，而卒莫消长也。惟江上之清风，与山间之明月，是造物者之无尽藏也。”
-              </div>
+          {loadingArticles && cloudArticles.length === 0 ? (
+            <div className="col-span-full py-12 text-center text-paper-aged font-archaic text-sm animate-pulse">
+              <span className="seal-box px-3 py-1 text-xs font-brush text-cinnabar">篇目检索</span>
+              <p className="mt-2">正在从 Cloudflare D1 边缘数据库调取当年传世手札...</p>
             </div>
-            <div className="mt-6 pt-4 border-t border-paper-wash/80 flex items-center justify-between text-xs font-archaic text-ink-light">
-              <span>〔明·茅鹿门评：坡公一生襟抱千古第一〕</span>
-              <span className="text-cinnabar font-brush text-sm group-hover:translate-x-1 transition-transform">
-                展卷入戏 ➔
-              </span>
-            </div>
-          </div>
-
-          {/* 手札 2: 后赤壁赋 */}
-          <div
-            onClick={() => onSelectArticle('chibifu-hou')}
-            className="group cursor-pointer bg-[#fbf6ed] hover:bg-[#fffdfa] text-ink-burnt p-7 rounded-2xl border-2 border-paper-wash hover:border-cinnabar shadow-theatre hover:-translate-y-2 transition-all duration-500 relative flex flex-col justify-between overflow-hidden"
-          >
-            <div>
-              <div className="flex items-center justify-between border-b border-paper-wash/80 pb-3 mb-3">
-                <span className="text-xs font-archaic text-cinnabar">
-                  宋神宗元丰五年十月望日 · 赋
-                </span>
-                <span className="seal-box px-2 py-0.5 text-[10px] font-brush">
-                  续游绝唱
-                </span>
+          ) : (
+            cloudArticles.map((art) => (
+              <div
+                key={art.id}
+                onClick={() => onSelectArticle(art.id)}
+                className="group cursor-pointer bg-[#fbf6ed] hover:bg-[#fffdfa] text-ink-burnt p-7 rounded-2xl border-2 border-paper-wash hover:border-cinnabar shadow-theatre hover:-translate-y-2 transition-all duration-500 relative flex flex-col justify-between overflow-hidden"
+              >
+                <div>
+                  <div className="flex items-center justify-between border-b border-paper-wash/80 pb-3 mb-3">
+                    <span className="text-xs font-archaic text-cinnabar">
+                      {art.lunarCalendarDesc} · {art.genre}
+                    </span>
+                    <span className="seal-solid px-2 py-0.5 text-[10px] font-brush">
+                      {art.genre === '赋' ? '千古神品' : '传世名作'}
+                    </span>
+                  </div>
+                  <h4 className="text-2xl font-bold font-song text-ink-burnt group-hover:text-cinnabar transition tracking-[0.2em]">
+                    {art.title}
+                  </h4>
+                  <p className="text-xs font-archaic text-ink-light mt-1">
+                    作于 {art.locationAncient} {art.locationModern ? `(${art.locationModern})` : ''}
+                  </p>
+                  <div className="mt-4 p-3.5 rounded-lg bg-paper-cooked/60 border border-paper-wash/60 text-xs font-song leading-relaxed text-ink-thick">
+                    {art.historicalContext}
+                  </div>
+                </div>
+                <div className="mt-6 pt-4 border-t border-paper-wash/80 flex items-center justify-between text-xs font-archaic text-ink-light">
+                  <span className="text-cinnabar font-bold truncate max-w-[200px]">{art.psychologicalBackground}</span>
+                  <span className="text-cinnabar font-brush text-sm group-hover:translate-x-1 transition-transform">
+                    展卷入戏 ➔
+                  </span>
+                </div>
               </div>
-              <h4 className="text-2xl font-bold font-song text-ink-burnt group-hover:text-cinnabar transition tracking-[0.2em]">
-                后赤壁赋
-              </h4>
-              <p className="text-xs font-archaic text-ink-light mt-1">
-                作于冬夜重游黄州断岸之时
-              </p>
-              <div className="mt-4 p-3.5 rounded-lg bg-paper-cooked/60 border border-paper-wash/60 text-xs font-song leading-relaxed text-ink-thick">
-                “江流有声，断岸千尺；山高月小，水落石出。曾日月之几何，而江山不可复识矣。适有孤鹤，横江东来。”
-              </div>
-            </div>
-            <div className="mt-6 pt-4 border-t border-paper-wash/80 flex items-center justify-between text-xs font-archaic text-ink-light">
-              <span>〔清·吴楚材评：仙气逼人，幽微超脱〕</span>
-              <span className="text-cinnabar font-brush text-sm group-hover:translate-x-1 transition-transform">
-                展卷入戏 ➔
-              </span>
-            </div>
-          </div>
-
-          {/* 手札 3: 记承天寺夜游 */}
-          <div
-            onClick={() => onSelectArticle('chengtian-yeyou')}
-            className="group cursor-pointer bg-[#fbf6ed] hover:bg-[#fffdfa] text-ink-burnt p-7 rounded-2xl border-2 border-paper-wash hover:border-cinnabar shadow-theatre hover:-translate-y-2 transition-all duration-500 relative flex flex-col justify-between overflow-hidden"
-          >
-            <div>
-              <div className="flex items-center justify-between border-b border-paper-wash/80 pb-3 mb-3">
-                <span className="text-xs font-archaic text-cinnabar">
-                  宋神宗元丰六年十月十二日 · 记
-                </span>
-                <span className="seal-box px-2 py-0.5 text-[10px] font-brush">
-                  短文神品
-                </span>
-              </div>
-              <h4 className="text-2xl font-bold font-song text-ink-burnt group-hover:text-cinnabar transition tracking-[0.2em]">
-                记承天寺夜游
-              </h4>
-              <p className="text-xs font-archaic text-ink-light mt-1">
-                夜访张怀民，步于承天寺中庭
-              </p>
-              <div className="mt-4 p-3.5 rounded-lg bg-paper-cooked/60 border border-paper-wash/60 text-xs font-song leading-relaxed text-ink-thick">
-                “庭下如积水空明，水中藻荇交横，盖竹柏影也。何夜无月？何处无竹柏？但少闲人如吾两人者耳。”
-              </div>
-            </div>
-            <div className="mt-6 pt-4 border-t border-paper-wash/80 flex items-center justify-between text-xs font-archaic text-ink-light">
-              <span>〔苏轼：世上本少此等闲人〕</span>
-              <span className="text-cinnabar font-brush text-sm group-hover:translate-x-1 transition-transform">
-                展卷入戏 ➔
-              </span>
-            </div>
-          </div>
+            ))
+          )}
         </div>
       </div>
     </section>
