@@ -297,17 +297,17 @@ export const DestinyStage: React.FC<DestinyStageProps> = ({
   }, [sageId]);
 
   return (
-    <section className="flex-1 flex flex-col px-8 py-6 max-w-6xl w-full mx-auto relative z-20 animate-cinematic">
+    <section className="flex-1 flex flex-col px-8 py-6 max-w-6xl w-full mx-auto relative z-20 animate-cinematic text-ink-burnt">
       {/* 顶栏 */}
-      <div className="flex items-center justify-between pb-4 border-b border-paper-wash/30 mb-6">
+      <div className="flex items-center justify-between pb-4 border-b border-paper-wash/60 mb-6">
         <button
           onClick={onBack}
-          className="flex items-center gap-2 text-xs font-archaic text-paper-wash hover:text-cinnabar transition px-3 py-1.5 rounded bg-black/40 border border-paper-wash/20"
+          className="flex items-center gap-2 text-xs font-archaic text-ink-heavy hover:text-cinnabar transition px-3 py-1.5 rounded-lg bg-paper-raw border border-paper-wash shadow-xs"
         >
           <span>◀ 返回先贤星汉</span>
         </button>
-        <div className="text-lg font-bold font-song text-[#fbf6ed] tracking-[0.2em] flex items-center gap-2">
-          <span className="seal-box px-1.5 py-0.5 text-xs font-brush text-cinnabar">第二幕</span>
+        <div className="text-lg font-bold font-song text-ink-burnt tracking-[0.2em] flex items-center gap-2">
+          <span className="seal-box px-2 py-0.5 text-xs font-brush text-cinnabar">第二幕</span>
           <span>{profile.stageSubtitle}</span>
         </div>
         <div className="text-xs font-archaic text-cinnabar">
@@ -315,17 +315,17 @@ export const DestinyStage: React.FC<DestinyStageProps> = ({
         </div>
       </div>
 
-      {/* 剧场主舞台 */}
-      <div className="relative rounded-3xl overflow-hidden border border-paper-wash/40 shadow-theatre mb-8 bg-[#1f1b18]">
+      {/* 剧场主舞台 (泛黄熟宣折页质感) */}
+      <div className="relative rounded-3xl overflow-hidden border-2 border-paper-wash shadow-sheet mb-8 bg-paper-cooked">
         <div
-          className={`absolute inset-0 bg-linear-to-r ${currentStory.atmosphereBg} opacity-90 transition-all duration-1000`}
+          className={`absolute inset-0 bg-linear-to-r ${currentStory.atmosphereBg} opacity-20 transition-all duration-1000`}
         />
 
         <div className="relative z-10 p-8 flex flex-col lg:flex-row items-center gap-8">
           {/* 左侧头像与心境 */}
-          <div className="flex flex-col items-center text-center shrink-0 w-64 border-b lg:border-b-0 lg:border-r border-paper-wash/30 pb-6 lg:pb-0 lg:pr-8">
+          <div className="flex flex-col items-center text-center shrink-0 w-64 border-b lg:border-b-0 lg:border-r border-paper-wash/60 pb-6 lg:pb-0 lg:pr-8">
             <div className="relative mb-3">
-              <div className="w-32 h-32 rounded-full border-4 border-cinnabar overflow-hidden shadow-seal bg-[#332b24] flex items-center justify-center">
+              <div className="w-32 h-32 rounded-full border-4 border-cinnabar overflow-hidden shadow-seal bg-paper-aged flex items-center justify-center">
                 {profile.avatarType === 'image' && profile.avatarSrc ? (
                   <img
                     src={profile.avatarSrc}
@@ -333,20 +333,20 @@ export const DestinyStage: React.FC<DestinyStageProps> = ({
                     className="w-full h-full object-cover object-top"
                   />
                 ) : (
-                  <span className="text-6xl font-brush text-paper-raw">{profile.avatarChar}</span>
+                  <span className="text-6xl font-brush text-ink-burnt">{profile.avatarChar}</span>
                 )}
               </div>
-              <div className="absolute -bottom-2.5 left-1/2 -translate-x-1/2 bg-cinnabar px-3 py-0.5 rounded-full text-[11px] font-brush text-paper-raw shadow whitespace-nowrap">
+              <div className="absolute -bottom-2.5 left-1/2 -translate-x-1/2 bg-cinnabar px-3 py-0.5 rounded-full text-[11px] font-brush text-paper-raw shadow-xs whitespace-nowrap">
                 {currentStory.yearDesc}
               </div>
             </div>
-            <h3 className="text-2xl font-bold font-song text-[#fbf6ed] tracking-widest mt-2">
+            <h3 className="text-2xl font-bold font-song text-ink-burnt tracking-widest mt-2">
               {profile.title}
             </h3>
             <p className="text-xs font-archaic text-cinnabar mt-0.5">
               {profile.officialPost}
             </p>
-            <div className="mt-4 p-3 rounded-lg bg-black/50 border border-paper-wash/20 text-xs font-song text-paper-aged text-left leading-relaxed">
+            <div className="mt-4 p-3.5 rounded-xl bg-paper-raw/90 border border-paper-wash/80 text-xs font-song text-ink-heavy text-left leading-relaxed shadow-xs">
               <span className="text-cinnabar font-bold block mb-1">【命途心境】</span>
               <span>{currentStory.motto}</span>
             </div>
@@ -354,21 +354,21 @@ export const DestinyStage: React.FC<DestinyStageProps> = ({
 
           {/* 右侧剧评与时间轴 */}
           <div className="flex-1 w-full space-y-5">
-            <div className="bg-black/60 rounded-xl p-5 border border-paper-wash/30 shadow-inner">
-              <div className="flex items-center gap-2 text-xs font-archaic text-cinnabar mb-1.5">
-                <span className="inline-block w-2 h-2 rounded-full bg-cinnabar animate-ping" />
+            <div className="bg-paper-raw/95 rounded-2xl p-6 border border-paper-wash shadow-xs">
+              <div className="flex items-center gap-2 text-xs font-archaic text-cinnabar mb-2 font-bold">
+                <span className="inline-block w-2.5 h-2.5 rounded-full bg-cinnabar animate-pulse" />
                 <span>{currentStory.narrativeTitle}</span>
               </div>
-              <p className="text-sm font-song text-paper-raw leading-relaxed">
+              <p className="text-sm font-song text-ink-thick leading-relaxed">
                 {currentStory.narrativeStory}
               </p>
             </div>
 
-            {/* 命途节点 */}
+            {/* 命途节点 (赭石、黛青传统色) */}
             <div>
-              <div className="text-xs font-archaic text-paper-wash mb-2 flex items-center justify-between">
+              <div className="text-xs font-archaic text-ink-heavy mb-2.5 flex items-center justify-between">
                 <span>命途天命之轴（点击节点推进戏剧时空）：</span>
-                <span className="text-cinnabar text-[11px]">✦ 当前节点：{currentStory.nodeTitle}</span>
+                <span className="text-cinnabar text-[11px] font-bold">✦ 当前节点：{currentStory.nodeTitle}</span>
               </div>
 
               <div className="grid grid-cols-2 sm:grid-cols-5 gap-2.5">
@@ -378,25 +378,25 @@ export const DestinyStage: React.FC<DestinyStageProps> = ({
                     onClick={() => setActiveNode(i)}
                     className={`p-3 rounded-xl text-left transition-all ${
                       activeNode === i
-                        ? 'border-2 border-cinnabar bg-[#3d2721] shadow-lg scale-105'
-                        : 'border border-paper-wash/30 bg-[#25211e] hover:bg-[#302a26]'
+                        ? 'border-2 border-cinnabar bg-paper-raw shadow-md scale-105'
+                        : 'border border-paper-wash/80 bg-paper-raw/60 hover:bg-paper-raw hover:border-paper-wash'
                     }`}
                   >
                     <span
                       className={`text-[10px] block ${
-                        activeNode === i ? 'text-cinnabar' : 'text-paper-wash'
+                        activeNode === i ? 'text-cinnabar font-bold' : 'text-ink-clear'
                       }`}
                     >
                       {node.yearDesc}
                     </span>
                     <span
                       className={`font-bold text-xs block ${
-                        activeNode === i ? 'text-paper-raw' : 'text-[#fbf6ed]'
+                        activeNode === i ? 'text-ink-burnt' : 'text-ink-heavy'
                       }`}
                     >
                       {node.nodeTitle}
                     </span>
-                    <span className="text-[10px] text-paper-wash">{node.subTitle}</span>
+                    <span className="text-[10px] text-ink-light">{node.subTitle}</span>
                   </button>
                 ))}
               </div>
@@ -410,23 +410,23 @@ export const DestinyStage: React.FC<DestinyStageProps> = ({
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="seal-solid px-2 py-0.5 text-xs font-brush">第三幕</div>
-            <h3 className="text-lg font-bold font-song text-[#fbf6ed] tracking-widest">
+            <h3 className="text-lg font-bold font-song text-ink-burnt tracking-widest">
               【{profile.name}】当年散落之手泽信札 (云端 D1 数据库实时直连)
             </h3>
           </div>
-          <span className="text-xs font-archaic text-paper-wash">
+          <span className="text-xs font-archaic text-ink-light">
             点击任意手札 · 运镜展开自右向左水墨长卷
           </span>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {loadingArticles ? (
-            <div className="col-span-full py-12 text-center text-paper-aged font-archaic text-sm animate-pulse">
+            <div className="col-span-full py-12 text-center text-ink-light font-archaic text-sm animate-pulse">
               <span className="seal-box px-3 py-1 text-xs font-brush text-cinnabar">篇目检索</span>
               <p className="mt-2">正在从 Cloudflare D1 边缘数据库调取当年传世手札...</p>
             </div>
           ) : cloudArticles.length === 0 ? (
-            <div className="col-span-full py-8 text-center text-paper-wash font-archaic text-sm">
+            <div className="col-span-full py-8 text-center text-ink-light font-archaic text-sm">
               暂无该先贤手札收录
             </div>
           ) : (
@@ -434,11 +434,11 @@ export const DestinyStage: React.FC<DestinyStageProps> = ({
               <div
                 key={art.id}
                 onClick={() => onSelectArticle(art.id)}
-                className="group cursor-pointer bg-[#fbf6ed] hover:bg-[#fffdfa] text-ink-burnt p-7 rounded-2xl border-2 border-paper-wash hover:border-cinnabar shadow-theatre hover:-translate-y-2 transition-all duration-500 relative flex flex-col justify-between overflow-hidden"
+                className="group cursor-pointer bg-paper-raw hover:bg-[#fffdf9] text-ink-burnt p-7 rounded-2xl border-2 border-paper-wash hover:border-cinnabar shadow-sheet hover:-translate-y-2 transition-all duration-500 relative flex flex-col justify-between overflow-hidden"
               >
                 <div>
                   <div className="flex items-center justify-between border-b border-paper-wash/80 pb-3 mb-3">
-                    <span className="text-xs font-archaic text-cinnabar">
+                    <span className="text-xs font-archaic text-cinnabar font-bold">
                       {art.lunarCalendarDesc || art.dynasty} · {art.genre}
                     </span>
                     <span className="seal-solid px-2 py-0.5 text-[10px] font-brush">
@@ -451,7 +451,7 @@ export const DestinyStage: React.FC<DestinyStageProps> = ({
                   <p className="text-xs font-archaic text-ink-light mt-1">
                     作于 {art.locationAncient || '先秦'} {art.locationModern ? `(${art.locationModern})` : ''}
                   </p>
-                  <div className="mt-4 p-3.5 rounded-lg bg-paper-cooked/60 border border-paper-wash/60 text-xs font-song leading-relaxed text-ink-thick">
+                  <div className="mt-4 p-3.5 rounded-xl bg-paper-cooked/70 border border-paper-wash/60 text-xs font-song leading-relaxed text-ink-heavy">
                     {art.historicalContext}
                   </div>
                 </div>

@@ -21,7 +21,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="antialiased min-h-screen bg-[#141211] text-paper-cooked overflow-x-hidden selection:bg-cinnabar/30 selection:text-paper-raw">
+      <body className="antialiased min-h-screen bg-paper-warm text-ink-burnt overflow-x-hidden selection:bg-cinnabar selection:text-paper-raw">
         {children}
       </body>
     </html>

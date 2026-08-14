@@ -5,40 +5,69 @@
   --font-brush: "Ma Shan Zheng", cursive, serif;
   --font-archaic: "ZCOOL XiaoWei", serif;
 
-  --color-paper-raw: #f5eee1;
-  --color-paper-cooked: #ede2ce;
-  --color-paper-aged: #dfcfb4;
-  --color-paper-wash: #cdbc9e;
+  /* ================= 泛黄宣纸与古绢基调系统 ================= */
+  --color-paper-raw: #faf6ee;       /* 澄心素宣 (最浅米黄) */
+  --color-paper-warm: #f4ecdc;      /* 温润宣纸 (主页面底色) */
+  --color-paper-cooked: #ebe0ca;    /* 熟宣古色 (卡片与容器) */
+  --color-paper-aged: #dfd0b5;      /* 宋元陈纸 (泛黄包浆) */
+  --color-paper-deep: #ceb998;      /* 古绢深底 (边缘晕染) */
+  --color-paper-wash: #c2aa87;      /* 竹帘纸纹 (分割线与边框) */
 
-  --color-ink-burnt: #121110;
-  --color-ink-thick: #26221e;
-  --color-ink-heavy: #473f37;
-  --color-ink-light: #7e7365;
-  --color-ink-clear: #ada18e;
+  /* ================= 墨分五色文字体系 ================= */
+  --color-ink-burnt: #1a1614;       /* 焦墨 (最高对比正文) */
+  --color-ink-thick: #2c2521;       /* 浓墨 (标题与强调) */
+  --color-ink-heavy: #4a3f37;       /* 重墨 (导读与心境) */
+  --color-ink-light: #73675c;       /* 淡墨 (白话今译) */
+  --color-ink-clear: #9e9081;       /* 清墨 (辅助小字与注疏) */
 
-  --color-cinnabar: #b22222;
-  --color-cinnabar-dark: #8b1a1a;
-  --color-cinnabar-seal: #a72525;
+  /* ================= 中国传统国色体系 (辅助色) ================= */
+  /* 1. 朱砂 / 丹砂 / 殷红 (印章、剧目标签、重点点睛) */
+  --color-cinnabar: #b83b3c;
+  --color-cinnabar-dark: #8c2425;
+  --color-cinnabar-seal: #a32c2d;
+  --color-cinnabar-light: #d65d5e;
 
-  --color-song-cyan: #264653;
-  --color-song-green: #2a6f5e;
-  --color-song-ochre: #8f5d38;
-  --color-song-moon: #fef6d8;
+  /* 2. 黛青 / 石青 / 霁蓝 (时空节点、文体标志) */
+  --color-china-cyan: #244b5c;
+  --color-china-blue: #1c3847;
+  --color-china-azure: #3a6b82;
 
-  --shadow-seal: inset 0 0 3px rgba(0,0,0,0.2), 0 2px 4px rgba(167,37,37,0.25);
-  --shadow-sheet: 0 20px 40px -10px rgba(35,31,28,0.25), 0 0 0 1px rgba(173,161,142,0.4);
-  --shadow-theatre: 0 30px 60px -12px rgba(18,17,16,0.6), inset 0 0 100px rgba(0,0,0,0.4);
+  /* 3. 松花绿 / 铜绿 / 竹青 (名家朱批、生机与隐逸) */
+  --color-china-green: #345c47;
+  --color-china-jade: #48755c;
+  --color-china-pine: #234232;
+
+  /* 4. 赭石 / 檀木 / 琥珀 (生命天命之轴、木构框架) */
+  --color-china-ochre: #96542e;
+  --color-china-amber: #b87333;
+  --color-china-sandalwood: #6e3d24;
+
+  /* 5. 泥金 / 藤黄 (千古神品微标、高贵尊荣) */
+  --color-china-gold: #c29b38;
+  --color-china-yellow: #dca842;
+
+  /* 6. 绛紫 / 檀紫 (古籍函套、帝王太史之气) */
+  --color-china-purple: #5c3c4f;
+
+  /* ================= 传统光影阴影 ================= */
+  --shadow-seal: inset 0 0 4px rgba(0,0,0,0.25), 0 2px 6px rgba(163,44,45,0.3);
+  --shadow-sheet: 0 12px 28px -6px rgba(44,37,33,0.18), 0 0 0 1px rgba(194,170,135,0.6);
+  --shadow-theatre: 0 24px 48px -10px rgba(26,22,20,0.4), inset 0 0 80px rgba(26,22,20,0.2);
 }
 
 :root {
-  --background: #141211;
-  --foreground: #ede2ce;
+  --background: #f4ecdc;
+  --foreground: #1a1614;
 }
 
 body {
   background-color: var(--background);
   color: var(--foreground);
   font-family: var(--font-song);
+  /* 宣纸温润纤维底色 */
+  background-image: radial-gradient(circle at 50% 20%, #faf6ee 0%, #f4ecdc 45%, #ebe0ca 100%);
+  background-attachment: fixed;
+  min-height: 100vh;
 }
 
 /* 纯正自上而下自右向左竖排 */
@@ -54,27 +83,28 @@ body {
   line-height: 2.5;
 }
 
-/* 朱文印章 */
+/* 朱文印章 (红框红字) */
 .seal-box {
-  border: 1.5px solid #a72525;
-  color: #a72525;
+  border: 1.5px solid var(--color-cinnabar-seal);
+  color: var(--color-cinnabar-seal);
   letter-spacing: 2px;
   position: relative;
+  background-color: rgba(250, 246, 238, 0.7);
 }
 .seal-box::before {
   content: '';
   position: absolute;
   inset: 1px;
-  border: 0.5px solid rgba(167, 37, 37, 0.4);
+  border: 0.5px solid rgba(163, 44, 45, 0.4);
   pointer-events: none;
 }
 
-/* 白文印章 */
+/* 白文印章 (红底白字) */
 .seal-solid {
-  background-color: #a72525;
-  color: #f5eee1;
+  background-color: var(--color-cinnabar-seal);
+  color: var(--color-paper-raw);
   letter-spacing: 2px;
-  box-shadow: 0 1px 3px rgba(167, 37, 37, 0.35);
+  box-shadow: 0 1px 4px rgba(163, 44, 45, 0.35);
 }
 
 /* 浓墨破空全屏转场动画 */
@@ -91,10 +121,10 @@ body {
 
 /* 电影剧场镜头推入 */
 @keyframes zoomInCinematic {
-  0% { opacity: 0; transform: scale(1.08) translateY(20px); }
+  0% { opacity: 0; transform: scale(1.05) translateY(16px); }
   100% { opacity: 1; transform: scale(1) translateY(0); }
 }
 
 .animate-cinematic {
-  animation: zoomInCinematic 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: zoomInCinematic 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }

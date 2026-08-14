@@ -49,17 +49,17 @@ export default function HomePage() {
       )}
 
       {/* 顶部素雅题签 */}
-      <header className="relative z-40 px-10 py-5 flex items-center justify-between border-b border-paper-wash/20 bg-[#141211]/80 backdrop-blur-md">
+      <header className="relative z-40 px-10 py-5 flex items-center justify-between border-b border-paper-wash/60 bg-paper-raw/90 backdrop-blur-md shadow-xs">
         <div className="flex items-center gap-4">
           <div className="seal-solid px-2 py-1 text-xs font-brush rounded-xs shadow-seal">
             文止观不止
           </div>
-          <div className="text-xl font-bold font-song tracking-[0.25em] text-paper-raw">
+          <div className="text-xl font-bold font-song tracking-[0.25em] text-ink-burnt">
             华夏先贤 · 交互式水墨短剧
           </div>
         </div>
-        <div className="flex items-center gap-4 text-xs font-archaic text-paper-aged">
-          <span className="seal-box px-2 py-0.5 font-brush border-cinnabar/60 text-cinnabar">
+        <div className="flex items-center gap-4 text-xs font-archaic text-ink-light">
+          <span className="seal-box px-2 py-0.5 font-brush border-cinnabar text-cinnabar">
             剧场模式
           </span>
           <span>从文章到生命 · 沉浸式时空入戏</span>
