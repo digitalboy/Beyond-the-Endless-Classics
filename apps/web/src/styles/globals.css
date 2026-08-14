@@ -1,0 +1,100 @@
+@import "tailwindcss";
+
+@theme {
+  --font-song: "Noto Serif SC", serif;
+  --font-brush: "Ma Shan Zheng", cursive, serif;
+  --font-archaic: "ZCOOL XiaoWei", serif;
+
+  --color-paper-raw: #f5eee1;
+  --color-paper-cooked: #ede2ce;
+  --color-paper-aged: #dfcfb4;
+  --color-paper-wash: #cdbc9e;
+
+  --color-ink-burnt: #121110;
+  --color-ink-thick: #26221e;
+  --color-ink-heavy: #473f37;
+  --color-ink-light: #7e7365;
+  --color-ink-clear: #ada18e;
+
+  --color-cinnabar: #b22222;
+  --color-cinnabar-dark: #8b1a1a;
+  --color-cinnabar-seal: #a72525;
+
+  --color-song-cyan: #264653;
+  --color-song-green: #2a6f5e;
+  --color-song-ochre: #8f5d38;
+  --color-song-moon: #fef6d8;
+
+  --shadow-seal: inset 0 0 3px rgba(0,0,0,0.2), 0 2px 4px rgba(167,37,37,0.25);
+  --shadow-sheet: 0 20px 40px -10px rgba(35,31,28,0.25), 0 0 0 1px rgba(173,161,142,0.4);
+  --shadow-theatre: 0 30px 60px -12px rgba(18,17,16,0.6), inset 0 0 100px rgba(0,0,0,0.4);
+}
+
+:root {
+  --background: #141211;
+  --foreground: #ede2ce;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-song);
+}
+
+/* 纯正自上而下自右向左竖排 */
+.vertical-mode {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+}
+
+.vertical-text-flow {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  letter-spacing: 0.22em;
+  line-height: 2.5;
+}
+
+/* 朱文印章 */
+.seal-box {
+  border: 1.5px solid #a72525;
+  color: #a72525;
+  letter-spacing: 2px;
+  position: relative;
+}
+.seal-box::before {
+  content: '';
+  position: absolute;
+  inset: 1px;
+  border: 0.5px solid rgba(167, 37, 37, 0.4);
+  pointer-events: none;
+}
+
+/* 白文印章 */
+.seal-solid {
+  background-color: #a72525;
+  color: #f5eee1;
+  letter-spacing: 2px;
+  box-shadow: 0 1px 3px rgba(167, 37, 37, 0.35);
+}
+
+/* 浓墨破空全屏转场动画 */
+@keyframes inkExplosion {
+  0% { transform: scale(0.1); opacity: 0; filter: blur(30px); }
+  50% { transform: scale(1.5); opacity: 0.95; filter: blur(10px); }
+  100% { transform: scale(2.8); opacity: 0; filter: blur(40px); pointer-events: none; }
+}
+
+.ink-transition-active {
+  display: block !important;
+  animation: inkExplosion 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* 电影剧场镜头推入 */
+@keyframes zoomInCinematic {
+  0% { opacity: 0; transform: scale(1.08) translateY(20px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.animate-cinematic {
+  animation: zoomInCinematic 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}

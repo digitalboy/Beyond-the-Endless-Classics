@@ -133,8 +133,8 @@
 <body class="font-song min-h-screen flex flex-col antialiased selection:bg-cinnabar/30 selection:text-paper-raw overflow-x-hidden relative">
 
   <!-- ======================== 【全屏水墨爆裂转场特效层】 ======================== -->
-  <div id="inkExplosionLayer" class="fixed inset-0 z-50 pointer-events-none hidden flex items-center justify-center bg-black/40 backdrop-blur-md">
-    <svg class="w-[800px] h-[800px] text-[#0d0c0b]" viewBox="0 0 200 200" fill="currentColor">
+  <div id="inkExplosionLayer" class="fixed inset-0 z-50 pointer-events-none hidden items-center justify-center bg-black/40 backdrop-blur-md">
+    <svg class="w-200 h-200 text-[#0d0c0b]" viewBox="0 0 200 200" fill="currentColor">
       <path d="M100,20 C130,20 180,50 170,100 C160,150 130,180 100,180 C60,180 20,140 30,90 C40,40 70,20 100,20 Z" filter="blur(4px)"></path>
     </svg>
   </div>
@@ -145,7 +145,7 @@
       <div class="seal-solid px-2 py-1 text-xs font-brush rounded-xs shadow-seal">
         文止观不止
       </div>
-      <div class="text-xl font-bold font-song tracking-[0.25em] text-[#f5eee1]">
+      <div class="text-xl font-bold font-song tracking-[0.25em] text-paper-raw">
         华夏先贤 · 交互式水墨短剧
       </div>
     </div>
@@ -193,7 +193,7 @@
           <!-- 图 2 (悬浮态)：抬头望向读者 (su_shi_looking.jpg) -->
           <img src="assets/su_shi_looking.jpg" alt="苏轼抬头注视" class="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-700 ease-in-out opacity-0 group-hover:opacity-100" />
           
-          <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent pointer-events-none z-20"></div>
+          <div class="absolute inset-0 bg-linear-to-t from-black/70 via-transparent to-transparent pointer-events-none z-20"></div>
           
           <!-- 动态提示标签 -->
           <span class="absolute bottom-2 z-20 text-[11px] font-archaic text-paper-raw/90 tracking-widest transition-all duration-500 group-hover:text-cinnabar">
@@ -219,7 +219,7 @@
         <div class="absolute top-4 right-4 seal-solid px-2 py-0.5 text-[10px] font-brush">三国</div>
         
         <div class="w-36 h-36 rounded-full border-2 border-paper-wash/40 group-hover:border-cinnabar overflow-hidden mb-5 transition-all duration-500 group-hover:scale-105 shadow-inner bg-[#332b24] relative flex items-center justify-center">
-          <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
+          <div class="absolute inset-0 bg-linear-to-t from-black/60 to-transparent z-10"></div>
           <svg class="w-24 h-24 text-paper-aged group-hover:text-paper-raw transition-colors" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.5">
             <circle cx="50" cy="38" r="20" />
             <path d="M25,88 C30,65 70,65 75,88" />
@@ -245,7 +245,7 @@
         <div class="absolute top-4 right-4 seal-solid px-2 py-0.5 text-[10px] font-brush">中唐</div>
         
         <div class="w-36 h-36 rounded-full border-2 border-paper-wash/40 group-hover:border-cinnabar overflow-hidden mb-5 transition-all duration-500 group-hover:scale-105 shadow-inner bg-[#332b24] relative flex items-center justify-center">
-          <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
+          <div class="absolute inset-0 bg-linear-to-t from-black/60 to-transparent z-10"></div>
           <svg class="w-24 h-24 text-paper-aged group-hover:text-paper-raw transition-colors" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.5">
             <circle cx="50" cy="40" r="22" />
             <path d="M28,88 C32,68 68,68 72,88" />
@@ -271,7 +271,7 @@
         <div class="absolute top-4 right-4 seal-solid px-2 py-0.5 text-[10px] font-brush">先秦</div>
         
         <div class="w-36 h-36 rounded-full border-2 border-paper-wash/40 group-hover:border-cinnabar overflow-hidden mb-5 transition-all duration-500 group-hover:scale-105 shadow-inner bg-[#332b24] relative flex items-center justify-center">
-          <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
+          <div class="absolute inset-0 bg-linear-to-t from-black/60 to-transparent z-10"></div>
           <svg class="w-24 h-24 text-paper-aged group-hover:text-paper-raw transition-colors" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.5">
             <circle cx="50" cy="40" r="22" />
             <path d="M28,88 C32,68 68,68 72,88" />
@@ -297,7 +297,7 @@
   </section>
 
   <!-- ======================== 【第二幕 & 第三幕：沉浸式水墨戏剧舞台】 ======================== -->
-  <section id="actDramaStage" class="hidden flex-1 flex flex-col px-8 py-6 max-w-6xl w-full mx-auto relative z-20">
+  <section id="actDramaStage" class="hidden flex-col px-8 py-6 max-w-6xl w-full mx-auto relative z-20">
     
     <!-- 剧场顶栏控制 -->
     <div class="flex items-center justify-between pb-4 border-b border-paper-wash/30 mb-6">
@@ -317,7 +317,7 @@
     <div class="relative rounded-3xl overflow-hidden border border-paper-wash/40 shadow-theatre mb-8 bg-[#1f1b18]">
       
       <!-- 动态氛围背景（随节点切换变幻）：金代武元直《赤壁图》意境渲染 -->
-      <div id="dramaBackdrop" class="absolute inset-0 bg-gradient-to-r from-[#12100e] via-[#1c2a33]/80 to-[#12100e] opacity-90 transition-all duration-1000">
+      <div id="dramaBackdrop" class="absolute inset-0 bg-linear-to-r from-[#12100e] via-[#1c2a33]/80 to-[#12100e] opacity-90 transition-all duration-1000">
         <svg class="absolute bottom-0 right-0 w-3/4 h-full text-[#223947] opacity-25" viewBox="0 0 600 300" preserveAspectRatio="none">
           <path d="M0,300 L100,180 Q300,80 450,220 T600,120 L600,300 Z" fill="currentColor"></path>
         </svg>
@@ -352,7 +352,7 @@
               <span class="inline-block w-2 h-2 rounded-full bg-cinnabar animate-ping"></span>
               <span id="narrativeTitle">【时空剧幕 · 元丰二年八月 湖州狱中】</span>
             </div>
-            <p id="narrativeContent" class="text-sm font-song text-[#f5eee1] leading-relaxed min-h-[50px]">
+            <p id="narrativeContent" class="text-sm font-song text-paper-raw leading-relaxed min-h-12.5">
               元丰二年八月十八日，湖州知州苏轼被御史台悍吏当街锁拿。百三十日严刑逼供，苏轼自料必死，写下“圣主如天万物春，小臣愚暗自亡身”诀别胞弟。免死谪居黄州后，他彻底蜕变，由苏轼成为真正的东坡居士……<span class="drama-cursor text-cinnabar">|</span>
             </p>
           </div>
