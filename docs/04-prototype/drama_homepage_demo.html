@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>古文观止 · 华夏先贤交互式水墨短剧剧场</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Google Fonts: 楷书与宋体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@300;400;600;700;900&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            song: ['"Noto Serif SC"', 'serif'],
+            brush: ['"Ma Shan Zheng"', 'cursive', 'serif'],
+            archaic: ['"ZCOOL XiaoWei"', 'serif'],
+          },
+          colors: {
+            paper: {
+              raw: '#f5eee1',
+              cooked: '#ede2ce',
+              aged: '#dfcfb4',
+              wash: '#cdbc9e',
+            },
+            ink: {
+              burnt: '#121110',
+              thick: '#26221e',
+              heavy: '#473f37',
+              light: '#7e7365',
+              clear: '#ada18e',
+            },
+            cinnabar: {
+              DEFAULT: '#b22222',
+              dark: '#8b1a1a',
+              seal: '#a72525',
+              glow: '#e63946',
+            }
+          },
+          boxShadow: {
+            'seal': 'inset 0 0 3px rgba(0,0,0,0.2), 0 2px 4px rgba(167,37,37,0.25)',
+            'sheet': '0 20px 40px -10px rgba(35,31,28,0.25), 0 0 0 1px rgba(173,161,142,0.5)',
+            'theatre': '0 30px 60px -12px rgba(18,17,16,0.6), inset 0 0 100px rgba(0,0,0,0.4)',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #1a1715;
+      color: #ede2ce;
+    }
+
+    .seal-box {
+      border: 1.5px solid #a72525;
+      color: #a72525;
+      letter-spacing: 2px;
+      position: relative;
+    }
+    .seal-box::before {
+      content: '';
+      position: absolute;
+      inset: 1px;
+      border: 0.5px solid rgba(167, 37, 37, 0.4);
+      pointer-events: none;
+    }
+
+    .seal-solid {
+      background-color: #a72525;
+      color: #f5eee1;
+      letter-spacing: 2px;
+      box-shadow: 0 2px 6px rgba(167, 37, 37, 0.4);
+    }
+
+    /* 浓墨破空全屏转场动画 */
+    @keyframes inkExplosion {
+      0% { transform: scale(0.1); opacity: 0; filter: blur(30px); }
+      50% { transform: scale(1.5); opacity: 0.95; filter: blur(10px); }
+      100% { transform: scale(2.8); opacity: 0; filter: blur(40px); pointer-events: none; }
+    }
+    .ink-transition-active {
+      display: block !important;
+      animation: inkExplosion 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    /* 电影剧场镜头推入 */
+    @keyframes zoomInCinematic {
+      0% { opacity: 0; transform: scale(1.08) translateY(20px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .animate-cinematic {
+      animation: zoomInCinematic 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    /* 手札破空飞入 */
+    @keyframes letterFlyIn {
+      0% { opacity: 0; transform: translateY(50px) rotate(-2deg) scale(0.92); }
+      100% { opacity: 1; transform: translateY(0) rotate(0) scale(1); }
+    }
+    .animate-flyin-1 { animation: letterFlyIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards; opacity: 0; }
+    .animate-flyin-2 { animation: letterFlyIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards; opacity: 0; }
+    .animate-flyin-3 { animation: letterFlyIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.6s forwards; opacity: 0; }
+
+    /* 水墨烟云流动 */
+    @keyframes mistDrift {
+      0% { transform: translateX(-5%) translateY(0); opacity: 0.25; }
+      50% { transform: translateX(5%) translateY(-10px); opacity: 0.45; }
+      100% { transform: translateX(-5%) translateY(0); opacity: 0.25; }
+    }
+    .animate-mist-slow {
+      animation: mistDrift 16s ease-in-out infinite;
+    }
+
+    /* 剧评打字机光标 */
+    @keyframes blinkCursor {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+    .drama-cursor {
+      animation: blinkCursor 0.9s infinite;
+    }
+  </style>
+</head>
+
+<body class="font-song min-h-screen flex flex-col antialiased selection:bg-cinnabar/30 selection:text-paper-raw overflow-x-hidden relative">
+
+  <!-- ======================== 【全屏水墨爆裂转场特效层】 ======================== -->
+  <div id="inkExplosionLayer" class="fixed inset-0 z-50 pointer-events-none hidden flex items-center justify-center bg-black/40 backdrop-blur-md">
+    <svg class="w-[800px] h-[800px] text-[#0d0c0b]" viewBox="0 0 200 200" fill="currentColor">
+      <path d="M100,20 C130,20 180,50 170,100 C160,150 130,180 100,180 C60,180 20,140 30,90 C40,40 70,20 100,20 Z" filter="blur(4px)"></path>
+    </svg>
+  </div>
+
+  <!-- 顶部素雅印章悬浮导航 -->
+  <header class="relative z-40 px-10 py-5 flex items-center justify-between border-b border-paper-wash/20 bg-[#141211]/80 backdrop-blur-md">
+    <div class="flex items-center gap-4">
+      <div class="seal-solid px-2 py-1 text-xs font-brush rounded-xs shadow-seal">
+        文止观不止
+      </div>
+      <div class="text-xl font-bold font-song tracking-[0.25em] text-[#f5eee1]">
+        华夏先贤 · 交互式水墨短剧
+      </div>
+    </div>
+    <div class="flex items-center gap-4 text-xs font-archaic text-paper-aged">
+      <span class="seal-box px-2 py-0.5 font-brush border-cinnabar/60 text-cinnabar">剧场模式</span>
+      <span>从文章到生命 · 沉浸式时空入戏</span>
+    </div>
+  </header>
+
+  <!-- ======================== 【第一幕：先贤星汉长卷（群像登场）】 ======================== -->
+  <section id="actPantheon" class="flex-1 flex flex-col items-center justify-center px-10 py-12 relative z-10 transition-all duration-700">
+    
+    <!-- 背景平远水墨山水画意 -->
+    <div class="absolute inset-0 pointer-events-none opacity-20 overflow-hidden">
+      <svg class="absolute bottom-0 w-full h-[60vh] text-[#363029] animate-mist-slow" viewBox="0 0 1200 400" preserveAspectRatio="none">
+        <path d="M0,400 L0,200 Q300,80 600,220 T1200,150 L1200,400 Z" fill="currentColor"></path>
+      </svg>
+    </div>
+
+    <div class="text-center space-y-4 mb-12 relative z-10">
+      <div class="inline-block seal-box px-4 py-1 text-xs font-brush text-cinnabar bg-black/40">
+        文因人立 · 人因事显
+      </div>
+      <h2 class="text-4xl font-bold font-song tracking-[0.35em] text-[#fbf6ed] drop-shadow-md">
+        星汉灿烂 · 先贤剧场
+      </h2>
+      <p class="text-sm font-archaic text-paper-wash tracking-[0.2em] max-w-xl mx-auto">
+        每一篇千古名文，皆是先贤在生命至暗时刻的灵魂绝唱。<br>点击先贤真容，启封一段跨越千年的生命短剧。
+      </p>
+    </div>
+
+    <!-- 先贤图像卡片阵列 (高保真艺术名画画像) -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl w-full relative z-10">
+      
+      <!-- 1. 苏轼 (东坡居士) - 双图动态交互：默认低头研读 -> 悬浮抬头注视 -->
+      <div onclick="triggerSageDrama('su-shi')" class="group cursor-pointer bg-[#231f1c]/90 hover:bg-[#2c2622] p-6 rounded-2xl border border-paper-wash/30 hover:border-cinnabar transition-all duration-500 shadow-theatre hover:-translate-y-2 flex flex-col items-center text-center relative overflow-hidden">
+        <div class="absolute top-4 right-4 seal-solid px-2 py-0.5 text-[10px] font-brush z-30">北宋</div>
+        
+        <!-- 双图层水墨肖像容器 -->
+        <div class="w-36 h-36 rounded-full border-2 border-paper-wash/40 group-hover:border-cinnabar overflow-hidden mb-5 transition-all duration-700 group-hover:scale-105 shadow-inner bg-[#332b24] relative flex items-center justify-center">
+          
+          <!-- 图 1 (默认态)：低头看书 (su_shi_reading.jpg) -->
+          <img src="assets/su_shi_reading.jpg" alt="苏轼展卷沉读" class="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-700 ease-in-out opacity-100 group-hover:opacity-0" />
+          
+          <!-- 图 2 (悬浮态)：抬头望向读者 (su_shi_looking.jpg) -->
+          <img src="assets/su_shi_looking.jpg" alt="苏轼抬头注视" class="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-700 ease-in-out opacity-0 group-hover:opacity-100" />
+          
+          <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent pointer-events-none z-20"></div>
+          
+          <!-- 动态提示标签 -->
+          <span class="absolute bottom-2 z-20 text-[11px] font-archaic text-paper-raw/90 tracking-widest transition-all duration-500 group-hover:text-cinnabar">
+            <span class="group-hover:hidden">✦ 沉吟展读</span>
+            <span class="hidden group-hover:inline">✦ 抬首相望</span>
+          </span>
+        </div>
+
+        <h3 class="text-2xl font-bold font-song tracking-widest text-[#fbf6ed] group-hover:text-cinnabar transition">苏 轼</h3>
+        <p class="text-xs font-archaic text-cinnabar mt-1">字子瞻 · 眉山人</p>
+        <p class="text-xs font-song text-paper-aged mt-3 leading-relaxed">
+          乌台死劫，百日严刑。<br>黄州赤壁，水月齐物大突围。
+        </p>
+
+        <div class="mt-6 px-4 py-1.5 rounded-full border border-cinnabar/40 group-hover:bg-cinnabar group-hover:text-paper-raw text-xs font-brush text-cinnabar transition-all flex items-center gap-1.5 shadow-sm">
+          <span>启封生命短剧</span>
+          <span class="text-xs">➔</span>
+        </div>
+      </div>
+
+      <!-- 2. 诸葛亮 (卧龙先生) -->
+      <div onclick="triggerSageDrama('zhuge-liang')" class="group cursor-pointer bg-[#231f1c]/90 hover:bg-[#2c2622] p-6 rounded-2xl border border-paper-wash/30 hover:border-cinnabar transition-all duration-500 shadow-theatre hover:-translate-y-2 flex flex-col items-center text-center relative overflow-hidden">
+        <div class="absolute top-4 right-4 seal-solid px-2 py-0.5 text-[10px] font-brush">三国</div>
+        
+        <div class="w-36 h-36 rounded-full border-2 border-paper-wash/40 group-hover:border-cinnabar overflow-hidden mb-5 transition-all duration-500 group-hover:scale-105 shadow-inner bg-[#332b24] relative flex items-center justify-center">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
+          <svg class="w-24 h-24 text-paper-aged group-hover:text-paper-raw transition-colors" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="50" cy="38" r="20" />
+            <path d="M25,88 C30,65 70,65 75,88" />
+            <path d="M30,22 L70,22 L50,12 Z" fill="currentColor" opacity="0.4" /> <!-- 纶巾 -->
+          </svg>
+          <span class="absolute bottom-2 z-20 text-[11px] font-archaic text-paper-raw/90 tracking-widest">武侯纶巾抱膝像</span>
+        </div>
+
+        <h3 class="text-2xl font-bold font-song tracking-widest text-[#fbf6ed] group-hover:text-cinnabar transition">诸葛亮</h3>
+        <p class="text-xs font-archaic text-cinnabar mt-1">字孔明 · 琅琊人</p>
+        <p class="text-xs font-song text-paper-aged mt-3 leading-relaxed">
+          白帝托孤，危急存亡。<br>五月渡泸，临表涕零不知所言。
+        </p>
+
+        <div class="mt-6 px-4 py-1.5 rounded-full border border-cinnabar/40 group-hover:bg-cinnabar group-hover:text-paper-raw text-xs font-brush text-cinnabar transition-all flex items-center gap-1.5 shadow-sm">
+          <span>启封生命短剧</span>
+          <span class="text-xs">➔</span>
+        </div>
+      </div>
+
+      <!-- 3. 韩愈 (昌黎先生) -->
+      <div onclick="triggerSageDrama('han-yu')" class="group cursor-pointer bg-[#231f1c]/90 hover:bg-[#2c2622] p-6 rounded-2xl border border-paper-wash/30 hover:border-cinnabar transition-all duration-500 shadow-theatre hover:-translate-y-2 flex flex-col items-center text-center relative overflow-hidden">
+        <div class="absolute top-4 right-4 seal-solid px-2 py-0.5 text-[10px] font-brush">中唐</div>
+        
+        <div class="w-36 h-36 rounded-full border-2 border-paper-wash/40 group-hover:border-cinnabar overflow-hidden mb-5 transition-all duration-500 group-hover:scale-105 shadow-inner bg-[#332b24] relative flex items-center justify-center">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
+          <svg class="w-24 h-24 text-paper-aged group-hover:text-paper-raw transition-colors" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="50" cy="40" r="22" />
+            <path d="M28,88 C32,68 68,68 72,88" />
+            <path d="M42,52 L50,72 L58,52" /> <!-- 垂髯 -->
+          </svg>
+          <span class="absolute bottom-2 z-20 text-[11px] font-archaic text-paper-raw/90 tracking-widest">韩昌黎先生画像</span>
+        </div>
+
+        <h3 class="text-2xl font-bold font-song tracking-widest text-[#fbf6ed] group-hover:text-cinnabar transition">韩 愈</h3>
+        <p class="text-xs font-archaic text-cinnabar mt-1">字退之 · 河阳人</p>
+        <p class="text-xs font-song text-paper-aged mt-3 leading-relaxed">
+          两世一身，宗族凋零。<br>天道难测，祭文千古第一痛切。
+        </p>
+
+        <div class="mt-6 px-4 py-1.5 rounded-full border border-cinnabar/40 group-hover:bg-cinnabar group-hover:text-paper-raw text-xs font-brush text-cinnabar transition-all flex items-center gap-1.5 shadow-sm">
+          <span>启封生命短剧</span>
+          <span class="text-xs">➔</span>
+        </div>
+      </div>
+
+      <!-- 4. 左丘明 (春秋史家) -->
+      <div onclick="triggerSageDrama('zuo-qiuming')" class="group cursor-pointer bg-[#231f1c]/90 hover:bg-[#2c2622] p-6 rounded-2xl border border-paper-wash/30 hover:border-cinnabar transition-all duration-500 shadow-theatre hover:-translate-y-2 flex flex-col items-center text-center relative overflow-hidden">
+        <div class="absolute top-4 right-4 seal-solid px-2 py-0.5 text-[10px] font-brush">先秦</div>
+        
+        <div class="w-36 h-36 rounded-full border-2 border-paper-wash/40 group-hover:border-cinnabar overflow-hidden mb-5 transition-all duration-500 group-hover:scale-105 shadow-inner bg-[#332b24] relative flex items-center justify-center">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
+          <svg class="w-24 h-24 text-paper-aged group-hover:text-paper-raw transition-colors" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="50" cy="40" r="22" />
+            <path d="M28,88 C32,68 68,68 72,88" />
+            <path d="M38,36 L62,36" stroke-width="2" /> <!-- 盲史高士之貌 -->
+          </svg>
+          <span class="absolute bottom-2 z-20 text-[11px] font-archaic text-paper-raw/90 tracking-widest">太史左丘明像</span>
+        </div>
+
+        <h3 class="text-2xl font-bold font-song tracking-widest text-[#fbf6ed] group-hover:text-cinnabar transition">左丘明</h3>
+        <p class="text-xs font-archaic text-cinnabar mt-1">鲁太史 · 盲史</p>
+        <p class="text-xs font-song text-paper-aged mt-3 leading-relaxed">
+          肉食者鄙，未能远谋。<br>一鼓作气，长勺之战算无遗策。
+        </p>
+
+        <div class="mt-6 px-4 py-1.5 rounded-full border border-cinnabar/40 group-hover:bg-cinnabar group-hover:text-paper-raw text-xs font-brush text-cinnabar transition-all flex items-center gap-1.5 shadow-sm">
+          <span>启封生命短剧</span>
+          <span class="text-xs">➔</span>
+        </div>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- ======================== 【第二幕 & 第三幕：沉浸式水墨戏剧舞台】 ======================== -->
+  <section id="actDramaStage" class="hidden flex-1 flex flex-col px-8 py-6 max-w-6xl w-full mx-auto relative z-20">
+    
+    <!-- 剧场顶栏控制 -->
+    <div class="flex items-center justify-between pb-4 border-b border-paper-wash/30 mb-6">
+      <button onclick="backToPantheon()" class="flex items-center gap-2 text-xs font-archaic text-paper-wash hover:text-cinnabar transition px-3 py-1.5 rounded bg-black/40 border border-paper-wash/20">
+        <span>◀ 返回先贤星汉</span>
+      </button>
+      <div id="stageSageTitle" class="text-lg font-bold font-song text-[#fbf6ed] tracking-[0.2em] flex items-center gap-2">
+        <span class="seal-box px-1.5 py-0.5 text-xs font-brush text-cinnabar">第二幕</span>
+        <span>苏轼 · 乌台死劫与黄州突围</span>
+      </div>
+      <div class="text-xs font-archaic text-cinnabar">
+        沉浸剧场：命途抉择 ➔ 手札破墨
+      </div>
+    </div>
+
+    <!-- 【剧场核心幕布】：名画背景 + 动态电影旁白剧评 + 天命时间轴 -->
+    <div class="relative rounded-3xl overflow-hidden border border-paper-wash/40 shadow-theatre mb-8 bg-[#1f1b18]">
+      
+      <!-- 动态氛围背景（随节点切换变幻）：金代武元直《赤壁图》意境渲染 -->
+      <div id="dramaBackdrop" class="absolute inset-0 bg-gradient-to-r from-[#12100e] via-[#1c2a33]/80 to-[#12100e] opacity-90 transition-all duration-1000">
+        <svg class="absolute bottom-0 right-0 w-3/4 h-full text-[#223947] opacity-25" viewBox="0 0 600 300" preserveAspectRatio="none">
+          <path d="M0,300 L100,180 Q300,80 450,220 T600,120 L600,300 Z" fill="currentColor"></path>
+        </svg>
+      </div>
+
+      <div class="relative z-10 p-8 flex flex-col lg:flex-row items-center gap-8">
+        
+        <!-- 左侧：先贤主位巨幅微动真容与动态生平剧评 -->
+        <div class="flex flex-col items-center text-center shrink-0 w-64 border-b lg:border-b-0 lg:border-r border-paper-wash/30 pb-6 lg:pb-0 lg:pr-8">
+          <div class="relative mb-3">
+            <div class="w-32 h-32 rounded-full border-4 border-cinnabar overflow-hidden shadow-seal bg-[#332b24]">
+              <img id="dramaStageAvatarImg" src="assets/su_shi_ink_portrait.jpg" alt="苏轼画像" class="w-full h-full object-cover object-top" />
+            </div>
+            <div class="absolute -bottom-2.5 left-1/2 -translate-x-1/2 bg-cinnabar px-3 py-0.5 rounded-full text-[11px] font-brush text-paper-raw shadow whitespace-nowrap">
+              元丰五年 · 黄州
+            </div>
+          </div>
+          <h3 id="dramaStageName" class="text-2xl font-bold font-song text-[#fbf6ed] tracking-widest mt-2">东坡居士 · 苏轼</h3>
+          <p id="dramaStageEra" class="text-xs font-archaic text-cinnabar mt-0.5">北宋神宗朝 · 黄州团练副使</p>
+          <div class="mt-4 p-3 rounded-lg bg-black/50 border border-paper-wash/20 text-xs font-song text-paper-aged text-left leading-relaxed">
+            <span class="text-cinnabar font-bold block mb-1">【命途心境】</span>
+            <span id="dramaStageMotto">“自其变者而观之，则天地曾不能以一瞬；自其不变者而观之，则物与我皆无尽也。”</span>
+          </div>
+        </div>
+
+        <!-- 右侧：交互式命运史诗节点与电影解说剧幕 -->
+        <div class="flex-1 w-full space-y-5">
+          
+          <!-- 电影剧评动态旁白区 -->
+          <div class="bg-black/60 rounded-xl p-5 border border-paper-wash/30 shadow-inner">
+            <div class="flex items-center gap-2 text-xs font-archaic text-cinnabar mb-1.5">
+              <span class="inline-block w-2 h-2 rounded-full bg-cinnabar animate-ping"></span>
+              <span id="narrativeTitle">【时空剧幕 · 元丰二年八月 湖州狱中】</span>
+            </div>
+            <p id="narrativeContent" class="text-sm font-song text-[#f5eee1] leading-relaxed min-h-[50px]">
+              元丰二年八月十八日，湖州知州苏轼被御史台悍吏当街锁拿。百三十日严刑逼供，苏轼自料必死，写下“圣主如天万物春，小臣愚暗自亡身”诀别胞弟。免死谪居黄州后，他彻底蜕变，由苏轼成为真正的东坡居士……<span class="drama-cursor text-cinnabar">|</span>
+            </p>
+          </div>
+
+          <!-- 五大命途转折点 (点击切换短剧时空) -->
+          <div>
+            <div class="text-xs font-archaic text-paper-wash mb-2 flex items-center justify-between">
+              <span>命途天命之轴（点击节点推进戏剧时空）：</span>
+              <span class="text-cinnabar text-[11px]">✦ 当前节点：黄州突围</span>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-5 gap-2.5" id="destinyNodesList">
+              <button onclick="switchDestinyTimeline(0)" id="nodeBtn0" class="p-3 rounded-xl border border-paper-wash/30 bg-[#25211e] hover:bg-[#302a26] text-left transition-all">
+                <span class="text-[10px] text-paper-wash block">1057年 20岁</span>
+                <span class="font-bold text-[#fbf6ed] text-xs block">嘉祐登科</span>
+                <span class="text-[10px] text-paper-wash">名动京师</span>
+              </button>
+
+              <button onclick="switchDestinyTimeline(1)" id="nodeBtn1" class="p-3 rounded-xl border border-paper-wash/30 bg-[#25211e] hover:bg-[#302a26] text-left transition-all">
+                <span class="text-[10px] text-paper-wash block">1069年 32岁</span>
+                <span class="font-bold text-[#fbf6ed] text-xs block">熙宁变法</span>
+                <span class="text-[10px] text-paper-wash">党争漩涡</span>
+              </button>
+
+              <button onclick="switchDestinyTimeline(2)" id="nodeBtn2" class="p-3 rounded-xl border border-paper-wash/30 bg-[#25211e] hover:bg-[#302a26] text-left transition-all">
+                <span class="text-[10px] text-paper-wash block">1079年 42岁</span>
+                <span class="font-bold text-[#fbf6ed] text-xs block">乌台死劫</span>
+                <span class="text-[10px] text-paper-wash">百日牢狱</span>
+              </button>
+
+              <button onclick="switchDestinyTimeline(3)" id="nodeBtn3" class="p-3 rounded-xl border-2 border-cinnabar bg-[#3d2721] text-left shadow-lg scale-105 transition-all">
+                <span class="text-[10px] text-cinnabar block">1082年 45岁</span>
+                <span class="font-bold text-paper-raw text-xs block">黄州突围 ✦</span>
+                <span class="text-[10px] text-paper-aged">水月齐物</span>
+              </button>
+
+              <button onclick="switchDestinyTimeline(4)" id="nodeBtn4" class="p-3 rounded-xl border border-paper-wash/30 bg-[#25211e] hover:bg-[#302a26] text-left transition-all">
+                <span class="text-[10px] text-paper-wash block">1097年 60岁</span>
+                <span class="font-bold text-[#fbf6ed] text-xs block">天涯儋州</span>
+                <span class="text-[10px] text-paper-wash">九死不悔</span>
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ======================== 【第三幕：手札破墨飞入区】 ======================== -->
+    <div class="space-y-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="seal-solid px-2 py-0.5 text-xs font-brush">第三幕</div>
+          <h3 class="text-lg font-bold font-song text-[#fbf6ed] tracking-widest">
+            黄州时空 · 当年散落之手泽信札 (3 篇名作)
+          </h3>
+        </div>
+        <span class="text-xs font-archaic text-paper-wash">点击任意手札 · 运镜展开自右向左水墨长卷</span>
+      </div>
+
+      <!-- 手札卡片列表：配有古籍版框与书法墨迹局部 -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="worksGrid">
+        
+        <!-- 手札 1: 前赤壁赋 -->
+        <div onclick="enterMasterpieceScroll('chibifu-qian')" class="animate-flyin-1 group cursor-pointer bg-[#fbf6ed] hover:bg-[#fffdfa] text-ink-burnt p-7 rounded-2xl border-2 border-paper-wash hover:border-cinnabar shadow-theatre hover:-translate-y-2 transition-all duration-500 relative flex flex-col justify-between overflow-hidden">
+          <div class="absolute -right-6 -bottom-6 opacity-10 group-hover:opacity-20 transition text-ink-heavy pointer-events-none">
+            <span class="text-9xl font-brush">赤</span>
+          </div>
+
+          <div>
+            <div class="flex items-center justify-between border-b border-paper-wash/80 pb-3 mb-3">
+              <span class="text-xs font-archaic text-cinnabar">宋神宗元丰五年七月既望 · 赋</span>
+              <span class="seal-solid px-2 py-0.5 text-[10px] font-brush">千古神品</span>
+            </div>
+            
+            <h4 class="text-2xl font-bold font-song text-ink-burnt group-hover:text-cinnabar transition tracking-[0.2em]">前赤壁赋</h4>
+            <p class="text-xs font-archaic text-ink-light mt-1">作于黄州赤鼻矶夜泛舟之时</p>
+
+            <!-- 名句手札切片 -->
+            <div class="mt-4 p-3.5 rounded-lg bg-paper-cooked/60 border border-paper-wash/60 text-xs font-song leading-relaxed text-ink-thick">
+              “逝者如斯，而未尝往也；盈虚者如彼，而卒莫消长也。惟江上之清风，与山间之明月，是造物者之无尽藏也。”
+            </div>
+          </div>
+
+          <div class="mt-6 pt-4 border-t border-paper-wash/80 flex items-center justify-between text-xs font-archaic text-ink-light">
+            <span>〔明·茅鹿门评：坡公一生襟抱千古第一〕</span>
+            <span class="text-cinnabar font-brush text-sm group-hover:translate-x-1 transition-transform">展卷入戏 ➔</span>
+          </div>
+        </div>
+
+        <!-- 手札 2: 后赤壁赋 -->
+        <div onclick="enterMasterpieceScroll('chibifu-hou')" class="animate-flyin-2 group cursor-pointer bg-[#fbf6ed] hover:bg-[#fffdfa] text-ink-burnt p-7 rounded-2xl border-2 border-paper-wash hover:border-cinnabar shadow-theatre hover:-translate-y-2 transition-all duration-500 relative flex flex-col justify-between overflow-hidden">
+          <div class="absolute -right-6 -bottom-6 opacity-10 group-hover:opacity-20 transition text-ink-heavy pointer-events-none">
+            <span class="text-9xl font-brush">鹤</span>
+          </div>
+
+          <div>
+            <div class="flex items-center justify-between border-b border-paper-wash/80 pb-3 mb-3">
+              <span class="text-xs font-archaic text-cinnabar">宋神宗元丰五年十月望日 · 赋</span>
+              <span class="seal-box px-2 py-0.5 text-[10px] font-brush">续游绝唱</span>
+            </div>
+            
+            <h4 class="text-2xl font-bold font-song text-ink-burnt group-hover:text-cinnabar transition tracking-[0.2em]">后赤壁赋</h4>
+            <p class="text-xs font-archaic text-ink-light mt-1">作于冬夜重游黄州断岸之时</p>
+
+            <div class="mt-4 p-3.5 rounded-lg bg-paper-cooked/60 border border-paper-wash/60 text-xs font-song leading-relaxed text-ink-thick">
+              “江流有声，断岸千尺；山高月小，水落石出。曾日月之几何，而江山不可复识矣。适有孤鹤，横江东来。”
+            </div>
+          </div>
+
+          <div class="mt-6 pt-4 border-t border-paper-wash/80 flex items-center justify-between text-xs font-archaic text-ink-light">
+            <span>〔清·吴楚材评：仙气逼人，幽微超脱〕</span>
+            <span class="text-cinnabar font-brush text-sm group-hover:translate-x-1 transition-transform">展卷入戏 ➔</span>
+          </div>
+        </div>
+
+        <!-- 手札 3: 记承天寺夜游 -->
+        <div onclick="enterMasterpieceScroll('chengtian-yeyou')" class="animate-flyin-3 group cursor-pointer bg-[#fbf6ed] hover:bg-[#fffdfa] text-ink-burnt p-7 rounded-2xl border-2 border-paper-wash hover:border-cinnabar shadow-theatre hover:-translate-y-2 transition-all duration-500 relative flex flex-col justify-between overflow-hidden">
+          <div class="absolute -right-6 -bottom-6 opacity-10 group-hover:opacity-20 transition text-ink-heavy pointer-events-none">
+            <span class="text-9xl font-brush">月</span>
+          </div>
+
+          <div>
+            <div class="flex items-center justify-between border-b border-paper-wash/80 pb-3 mb-3">
+              <span class="text-xs font-archaic text-cinnabar">宋神宗元丰六年十月十二日 · 记</span>
+              <span class="seal-box px-2 py-0.5 text-[10px] font-brush">短文神品</span>
+            </div>
+            
+            <h4 class="text-2xl font-bold font-song text-ink-burnt group-hover:text-cinnabar transition tracking-[0.2em]">记承天寺夜游</h4>
+            <p class="text-xs font-archaic text-ink-light mt-1">夜访张怀民，步于承天寺中庭</p>
+
+            <div class="mt-4 p-3.5 rounded-lg bg-paper-cooked/60 border border-paper-wash/60 text-xs font-song leading-relaxed text-ink-thick">
+              “庭下如积水空明，水中藻荇交横，盖竹柏影也。何夜无月？何处无竹柏？但少闲人如吾两人者耳。”
+            </div>
+          </div>
+
+          <div class="mt-6 pt-4 border-t border-paper-wash/80 flex items-center justify-between text-xs font-archaic text-ink-light">
+            <span>〔苏轼：世上本少此等闲人〕</span>
+            <span class="text-cinnabar font-brush text-sm group-hover:translate-x-1 transition-transform">展卷入戏 ➔</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </section>
+
+  <script>
+    lucide.createIcons();
+
+    // 触发剧场浓墨破空转场
+    function triggerSageDrama(sageId) {
+      const explosion = document.getElementById('inkExplosionLayer');
+      explosion.classList.remove('hidden');
+      explosion.classList.add('ink-transition-active');
+
+      setTimeout(() => {
+        document.getElementById('actPantheon').classList.add('hidden');
+        document.getElementById('actDramaStage').classList.remove('hidden');
+        document.getElementById('actDramaStage').classList.add('animate-cinematic');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }, 500);
+
+      setTimeout(() => {
+        explosion.classList.add('hidden');
+        explosion.classList.remove('ink-transition-active');
+      }, 1200);
+    }
+
+    function backToPantheon() {
+      document.getElementById('actDramaStage').classList.add('hidden');
+      document.getElementById('actPantheon').classList.remove('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // 切换命途节点戏剧旁白
+    const dramaStories = [
+      {
+        title: "【第一幕 · 1057年 嘉祐登科】",
+        content: "弱冠之年，苏轼与弟苏辙名动汴京。主考欧阳修读其《刑赏忠厚之至论》，大赞：“读轼书，不觉汗出，快哉！老夫当避路，放他出一头地！”少年得志，风华绝代。",
+        motto: "“天下之患，最不可为者，名为治平无事，而其实有不测之忧。”",
+        bg: "from-[#1a1c12] via-[#2d3a24]/80 to-[#12140e]"
+      },
+      {
+        title: "【第二幕 · 1069年 熙宁党争】",
+        content: "王安石推行新法，急政骤起。苏轼直言进谏：“求治太急，听言太广”，触怒执政。他不愿在朋党间苟且迎合，自请外放杭州、密州。在民间深知百姓疾苦。",
+        motto: "“老夫聊发少年狂，左牵黄，右擎苍。会挽雕弓如满月，西北望，射天狼。”",
+        bg: "from-[#221815] via-[#3d241d]/80 to-[#14100f]"
+      },
+      {
+        title: "【第三幕 · 1079年 乌台死劫】",
+        content: "元丰二年八月，新党罗织文字狱，苏轼在湖州被悍吏索拿入御史台狱。百三十日严刑拷问，生死悬于一线。他写下诀别诗：“与君世世为兄弟，更结来生未了因。”",
+        motto: "“梦绕云山心似鹿，魂飞汤火命如鸡。眼中犀角真吾子，身后牛衣愧老妻。”",
+        bg: "from-[#100f14] via-[#1f1a29]/90 to-[#0c0b10]"
+      },
+      {
+        title: "【第四幕 · 1082年 黄州突围】",
+        content: "大难不死，贬谪黄州团练副使，不得签书公事。家徒四壁，他在东坡开荒种地，自号“东坡居士”。就在这一无所有的绝境中，他在赤壁之下完成了千古精神突围！",
+        motto: "“自其变者而观之，则天地曾不能以一瞬；自其不变者而观之，则物与我皆无尽也。”",
+        bg: "from-[#12100e] via-[#1c2a33]/80 to-[#12100e]"
+      },
+      {
+        title: "【第五幕 · 1097年 天涯儋州】",
+        content: "年逾花甲，再贬岭南惠州，后跨海贬至荒蛮儋州（海南）。他教化黎民，凿井讲学，把贬谪之地变成了文化绿洲。“问汝平生功业，黄州惠州儋州！”",
+        motto: "“九死南荒吾不恨，兹游奇绝冠平生。报道先生春睡美，道人轻打五更钟。”",
+        bg: "from-[#141d24] via-[#193240]/80 to-[#0e141a]"
+      }
+    ];
+
+    function switchDestinyTimeline(idx) {
+      const data = dramaStories[idx];
+      document.getElementById('narrativeTitle').textContent = data.title;
+      document.getElementById('narrativeContent').innerHTML = data.content + '<span class="drama-cursor text-cinnabar">|</span>';
+      document.getElementById('dramaStageMotto').textContent = data.motto;
+      document.getElementById('dramaBackdrop').className = `absolute inset-0 bg-gradient-to-r ${data.bg} opacity-90 transition-all duration-1000`;
+
+      // 按钮状态切换
+      for (let i = 0; i < 5; i++) {
+        const btn = document.getElementById('nodeBtn' + i);
+        if (i === idx) {
+          btn.className = "p-3 rounded-xl border-2 border-cinnabar bg-[#3d2721] text-left shadow-lg scale-105 transition-all";
+        } else {
+          btn.className = "p-3 rounded-xl border border-paper-wash/30 bg-[#25211e] hover:bg-[#302a26] text-left transition-all";
+        }
+      }
+    }
+
+    // 第四幕：无缝运镜展开古典水墨手卷
+    function enterMasterpieceScroll(slug) {
+      window.location.href = "index.html";
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>古文观止 · 《前赤壁赋》水墨手卷</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Google Fonts: 楷书与宋体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@300;400;600;700;900&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            song: ['"Noto Serif SC"', 'serif'],
+            brush: ['"Ma Shan Zheng"', 'cursive', 'serif'],
+            archaic: ['"ZCOOL XiaoWei"', 'serif'],
+          },
+          colors: {
+            paper: {
+              raw: '#f5eee1',
+              cooked: '#ede2ce',
+              aged: '#dfcfb4',
+              wash: '#cdbc9e',
+            },
+            ink: {
+              burnt: '#121110',
+              thick: '#26221e',
+              heavy: '#473f37',
+              light: '#7e7365',
+              clear: '#ada18e',
+            },
+            cinnabar: {
+              DEFAULT: '#b22222',
+              dark: '#8b1a1a',
+              seal: '#a72525',
+            },
+            song: {
+              cyan: '#264653',
+              green: '#2a6f5e',
+              ochre: '#8f5d38',
+              moon: '#fef6d8',
+            }
+          },
+          boxShadow: {
+            'seal': 'inset 0 0 3px rgba(0,0,0,0.2), 0 2px 4px rgba(167,37,37,0.25)',
+            'sheet': '0 20px 40px -10px rgba(35,31,28,0.2), 0 0 0 1px rgba(173,161,142,0.4)',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #ede2ce;
+      background-image: 
+        radial-gradient(rgba(173, 161, 142, 0.25) 1px, transparent 1px),
+        linear-gradient(180deg, #f5eee1 0%, #ede2ce 50%, #e2d2b8 100%);
+      background-size: 32px 32px, 100% 100%;
+    }
+
+    /* 纯正自上而下竖排 */
+    .vertical-mode {
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+    }
+
+    .vertical-text-flow {
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      letter-spacing: 0.22em;
+      line-height: 2.5;
+    }
+
+    /* 朱文印章 */
+    .seal-box {
+      border: 1.5px solid #a72525;
+      color: #a72525;
+      letter-spacing: 2px;
+      position: relative;
+    }
+    .seal-box::before {
+      content: '';
+      position: absolute;
+      inset: 1px;
+      border: 0.5px solid rgba(167, 37, 37, 0.4);
+      pointer-events: none;
+    }
+
+    /* 白文印章 */
+    .seal-solid {
+      background-color: #a72525;
+      color: #f5eee1;
+      letter-spacing: 2px;
+      box-shadow: 0 1px 3px rgba(167, 37, 37, 0.35);
+    }
+
+    @keyframes mistFlow {
+      0%, 100% { transform: translateY(0); opacity: 0.35; }
+      50% { transform: translateY(-6px); opacity: 0.5; }
+    }
+    .animate-mist {
+      animation: mistFlow 10s ease-in-out infinite;
+    }
+
+    /* 优雅宋纸滚动条 */
+    #scrollContainer::-webkit-scrollbar {
+      height: 6px;
+    }
+    #scrollContainer::-webkit-scrollbar-track {
+      background: rgba(205, 188, 158, 0.3);
+      border-radius: 3px;
+    }
+    #scrollContainer::-webkit-scrollbar-thumb {
+      background: #b5a487;
+      border-radius: 3px;
+    }
+    #scrollContainer::-webkit-scrollbar-thumb:hover {
+      background: #8f5d38;
+    }
+
+    .section-hover-glow:hover {
+      background: linear-gradient(180deg, rgba(245, 238, 225, 0.6) 0%, rgba(237, 226, 206, 0.2) 100%);
+      box-shadow: inset 0 0 0 1px rgba(167, 37, 37, 0.3);
+    }
+  </style>
+</head>
+
+<body class="text-ink-thick font-song min-h-screen flex flex-col antialiased selection:bg-cinnabar/20 selection:text-cinnabar-dark">
+
+  <!-- 郭熙《林泉高致》背景：平远水墨江山 -->
+  <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden opacity-25">
+    <svg class="absolute bottom-0 left-0 right-0 w-full h-[55vh] text-ink-clear animate-mist" viewBox="0 0 1200 400" preserveAspectRatio="none">
+      <path d="M0,400 L0,220 Q200,90 400,200 T800,160 T1200,100 L1200,400 Z" fill="currentColor" opacity="0.5"></path>
+      <path d="M0,400 L0,280 Q300,150 600,260 T1000,200 T1200,240 L1200,400 Z" fill="#264653" opacity="0.3"></path>
+    </svg>
+    <div class="absolute top-10 left-20 w-16 h-16 rounded-full bg-song-moon/70 blur-[1px] shadow-[0_0_40px_rgba(254,246,216,0.6)]"></div>
+  </div>
+
+  <!-- 顶部：素雅题签与多维视角导航 -->
+  <header class="relative z-30 px-10 py-4 flex items-center justify-between border-b border-paper-wash/50 bg-paper-raw/60 backdrop-blur-sm">
+    
+    <!-- 卷首题跋 -->
+    <div class="flex items-center gap-5">
+      <div class="seal-solid px-2 py-1 text-xs font-brush rounded-xs shadow-seal">
+        文止观不止
+      </div>
+      <div class="flex items-center gap-3">
+        <h1 class="text-xl font-bold font-song tracking-[0.25em] text-ink-burnt">
+          前赤壁赋
+        </h1>
+        <span class="text-xs font-archaic text-ink-light tracking-wider pl-2 border-l border-paper-wash">
+          〔宋〕苏轼 · 元丰五年七月十六日夜 · 湖北黄州
+        </span>
+      </div>
+    </div>
+
+    <!-- 右侧功能印章 -->
+    <div class="flex items-center gap-4 text-xs font-archaic">
+      <button onclick="openLetter('geoLetter')" class="hover:text-cinnabar transition flex items-center gap-1.5 text-ink-heavy px-2.5 py-1 rounded bg-paper-cooked/60 border border-paper-wash hover:border-cinnabar/40">
+        <span class="seal-box px-1 text-[9px] font-brush">地</span>
+        <span class="tracking-widest">赤壁地望</span>
+      </button>
+
+      <button onclick="openLetter('historyLetter')" class="hover:text-cinnabar transition flex items-center gap-1.5 text-ink-heavy px-2.5 py-1 rounded bg-paper-cooked/60 border border-paper-wash hover:border-cinnabar/40">
+        <span class="seal-box px-1 text-[9px] font-brush">局</span>
+        <span class="tracking-widest">熙宁风云</span>
+      </button>
+
+      <button onclick="openLetter('resonanceLetter')" class="hover:text-cinnabar transition flex items-center gap-1.5 text-ink-heavy px-2.5 py-1 rounded bg-paper-cooked/60 border border-paper-wash hover:border-cinnabar/40">
+        <span class="seal-box px-1 text-[9px] font-brush">镜</span>
+        <span class="tracking-widest">古今心镜</span>
+      </button>
+
+      <button onclick="openSageDialogue()" class="seal-solid px-3 py-1 text-xs font-brush tracking-widest hover:bg-cinnabar-dark transition shadow-seal flex items-center gap-1">
+        <span>对谈东坡</span>
+        <span class="text-[10px]">✍</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- 展卷提示与横向导引条（准确符合中国自右向左书写体例） -->
+  <div class="relative z-20 px-10 py-2 flex items-center justify-between text-xs font-archaic text-ink-light border-b border-paper-wash/30 bg-paper-cooked/30">
+    <div class="flex items-center gap-2">
+      <span class="seal-box px-1 text-[9px] font-brush">长卷</span>
+      <span>中国古典手卷：从右侧【卷首】起读，向左展开阅读 · 滚轮向下滚动即可自动向左展卷</span>
+    </div>
+    <div class="flex items-center gap-3">
+      <button onclick="scrollRoll('end')" class="hover:text-cinnabar transition flex items-center gap-0.5">
+        <span>◀ 卷尾 (款)</span>
+      </button>
+      <span>·</span>
+      <button onclick="scrollRoll('unroll')" class="hover:text-cinnabar transition">
+        <span>向左展卷 ➔</span>
+      </button>
+      <span>·</span>
+      <button onclick="scrollRoll('start')" class="hover:text-cinnabar transition flex items-center gap-0.5 text-cinnabar font-bold">
+        <span>卷首 (起) ▶</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- 主体长卷视口 -->
+  <main class="relative z-10 flex-1 flex items-center py-6 px-10 overflow-hidden">
+    
+    <!-- 水平滚动容器 -->
+    <div id="scrollContainer" class="w-full overflow-x-auto overflow-y-hidden py-4 flex items-center min-h-[480px]">
+      
+      <!-- 连绵墨迹长卷（自右向左排列：最右侧为卷首 ➔ 最左侧为卷尾款识） -->
+      <div class="flex flex-row-reverse items-start gap-12 min-w-max h-[440px] px-8">
+        
+        <!-- ================= 卷首题签（在物理最右侧） ================= -->
+        <div class="vertical-mode h-full flex flex-col justify-between py-2 pr-2 pl-8 border-l border-paper-wash/60">
+          <div class="seal-box px-1.5 py-3 text-xs font-brush rounded-xs shadow-seal">
+            神品
+          </div>
+
+          <div class="my-auto space-y-4">
+            <div class="text-4xl font-bold font-song tracking-[0.35em] text-ink-burnt">
+              前赤壁赋
+            </div>
+            <div class="text-base font-brush text-ink-light tracking-[0.3em] pt-4">
+              眉山 苏轼 书
+            </div>
+          </div>
+
+          <div class="text-xs font-archaic text-ink-light tracking-widest">
+            宋神宗元丰五年七月
+          </div>
+        </div>
+
+        <!-- ================= 第一段：清风徐来，水月初升 ================= -->
+        <div class="vertical-mode h-full flex flex-col justify-between py-2 px-5 rounded-xl transition section-hover-glow cursor-pointer" onclick="openSectionLetter(0)">
+          <!-- 段首朱印 -->
+          <div class="flex items-center gap-2 mb-2">
+            <span class="seal-solid px-1 py-1 text-[9px] font-brush rounded-xs">其一</span>
+            <span class="text-cinnabar text-xs font-archaic">〔朱批 · 怡然超旷〕</span>
+          </div>
+
+          <!-- 竖排正文 -->
+          <div class="vertical-text-flow font-song text-lg text-ink-burnt h-[330px] flex flex-col flex-wrap gap-x-4 text-justify">
+            <span>壬戌之秋，七月既望，苏子与客泛舟游于赤壁之下。</span>
+            <span>清风徐来，水波不兴。</span>
+            <span>举酒属客，诵明月之诗，歌窈窕之章。</span>
+            <span>少焉，月出于东山之上，徘徊于斗牛之间。</span>
+            <span>白露横江，水光接天。纵一苇之所如，凌万顷之茫然。</span>
+            <span>浩浩乎如冯虚御风，而不知其所止；飘飘乎如遗世独立，羽化而登仙。</span>
+          </div>
+
+          <!-- 段尾微注 -->
+          <div class="text-[11px] font-archaic text-ink-light pt-2 flex items-center justify-between">
+            <span>清风徐来 · 羽化登仙</span>
+            <span class="text-cinnabar font-brush">展笺 ➔</span>
+          </div>
+        </div>
+
+        <!-- ================= 第二段：扣舷悲歌，箫声呜咽 ================= -->
+        <div class="vertical-mode h-full flex flex-col justify-between py-2 px-5 rounded-xl transition section-hover-glow cursor-pointer" onclick="openSectionLetter(1)">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="seal-solid px-1 py-1 text-[9px] font-brush rounded-xs">其二</span>
+            <span class="text-cinnabar text-xs font-archaic">〔朱批 · 由乐转悲〕</span>
+          </div>
+
+          <div class="vertical-text-flow font-song text-lg text-ink-burnt h-[330px] flex flex-col flex-wrap gap-x-4 text-justify">
+            <span>于是饮酒乐甚，扣舷而歌之。</span>
+            <span>歌曰：“桂棹兮兰桨，击空明兮溯流光。</span>
+            <span>渺渺兮予怀，望美人兮天一方。”</span>
+            <span>客有吹洞箫者，倚歌而和之。</span>
+            <span>其声呜呜然，如怨如慕，如泣如诉；</span>
+            <span>余音袅袅，不绝如缕。</span>
+            <span>舞幽壑之潜蛟，泣孤舟之嫠妇。</span>
+          </div>
+
+          <div class="text-[11px] font-archaic text-ink-light pt-2 flex items-center justify-between">
+            <span>望美人兮 · 如泣如诉</span>
+            <span class="text-cinnabar font-brush">展笺 ➔</span>
+          </div>
+        </div>
+
+        <!-- ================= 第三段：英雄安在，沧海一粟 ================= -->
+        <div class="vertical-mode h-full flex flex-col justify-between py-2 px-5 rounded-xl transition section-hover-glow cursor-pointer" onclick="openSectionLetter(2)">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="seal-solid px-1 py-1 text-[9px] font-brush rounded-xs">其三</span>
+            <span class="text-cinnabar text-xs font-archaic">〔朱批 · 存在主义虚无〕</span>
+          </div>
+
+          <div class="vertical-text-flow font-song text-lg text-ink-burnt h-[330px] flex flex-col flex-wrap gap-x-4 text-justify">
+            <span>苏子愀然，正襟危坐，而问客曰：“何为其然也？”</span>
+            <span>客曰：“‘月明星稀，乌鹊南飞’，此非曹孟德之诗乎？</span>
+            <span>西望夏口，东望武昌，山川相缪，郁乎苍苍，此非孟德之困于周郎者乎？</span>
+            <span>方其破荆州，下江陵，顺流而东也，舳舻千里，旌旗蔽空，</span>
+            <span>酾酒临江，横槊赋诗，固一世之雄也，而今安在哉？</span>
+            <span>况吾与子渔樵于江渚之上，侣鱼虾而友麋鹿，</span>
+            <span>驾一叶之扁舟，举匏樽以相属。</span>
+            <span>寄蜉蝣于天地，渺沧海之一粟。</span>
+            <span>哀吾生之须臾，羡长江之无穷。</span>
+            <span>挟飞仙以遨游，抱明月而长终。知不可乎骤得，托遗响于悲风。”</span>
+          </div>
+
+          <div class="text-[11px] font-archaic text-ink-light pt-2 flex items-center justify-between">
+            <span>英雄安在 · 沧海一粟</span>
+            <span class="text-cinnabar font-brush">展笺 ➔</span>
+          </div>
+        </div>
+
+        <!-- ================= 第四段：水月之辩，造物无尽 ================= -->
+        <div class="vertical-mode h-full flex flex-col justify-between py-2 px-5 rounded-xl transition section-hover-glow cursor-pointer" onclick="openSectionLetter(3)">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="seal-solid px-1 py-1 text-[9px] font-brush rounded-xs">其四</span>
+            <span class="text-cinnabar text-xs font-archaic">〔朱批 · 齐物哲辩突围〕</span>
+          </div>
+
+          <div class="vertical-text-flow font-song text-lg text-ink-burnt h-[330px] flex flex-col flex-wrap gap-x-4 text-justify">
+            <span>苏子曰：“客亦知夫水与月乎？逝者如斯，而未尝往也；</span>
+            <span>盈虚者如彼，而卒莫消长也。</span>
+            <span>盖将自其变者而观之，则天地曾不能以一瞬；</span>
+            <span>自其不变者而观之，则物与我皆无尽也，而又何羡乎！</span>
+            <span>且夫天地之间，物各有主，苟非吾之所有，虽一毫而莫取。</span>
+            <span>惟江上之清风，与山间之明月，耳得之而为声，目遇之而成色，</span>
+            <span>取之无禁，用之不竭。是造物者之无尽藏也，而吾与子之所共适。”</span>
+          </div>
+
+          <div class="text-[11px] font-archaic text-ink-light pt-2 flex items-center justify-between">
+            <span>物我无尽 · 造物无尽藏</span>
+            <span class="text-cinnabar font-brush">展笺 ➔</span>
+          </div>
+        </div>
+
+        <!-- ================= 第五段：相与枕藉，东方既白 ================= -->
+        <div class="vertical-mode h-full flex flex-col justify-between py-2 px-5 rounded-xl transition section-hover-glow cursor-pointer" onclick="openSectionLetter(4)">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="seal-solid px-1 py-1 text-[9px] font-brush rounded-xs">其五</span>
+            <span class="text-cinnabar text-xs font-archaic">〔朱批 · 天人和解〕</span>
+          </div>
+
+          <div class="vertical-text-flow font-song text-lg text-ink-burnt h-[330px] flex flex-col flex-wrap gap-x-4 text-justify">
+            <span>客喜而笑，洗盏更酌。</span>
+            <span>肴核既尽，杯盘狼籍。</span>
+            <span>相与枕藉乎舟中，不知东方之既白。</span>
+          </div>
+
+          <div class="text-[11px] font-archaic text-ink-light pt-2 flex items-center justify-between">
+            <span>相与枕藉 · 东方既白</span>
+            <span class="text-cinnabar font-brush">展笺 ➔</span>
+          </div>
+        </div>
+
+        <!-- ================= 卷尾款识（在物理最左侧） ================= -->
+        <div class="vertical-mode h-full flex flex-col justify-between py-2 pl-4 pr-10 border-r border-paper-wash/60">
+          <div class="space-y-4 my-auto">
+            <div class="text-xs font-archaic text-ink-light tracking-[0.25em]">
+              宋神宗元丰五年七月十六日夜
+            </div>
+            <div class="text-base font-brush text-ink-burnt tracking-[0.3em] leading-relaxed">
+              东坡居士 眉山苏轼 <br>
+              书于黄州临皋亭醉后
+            </div>
+          </div>
+
+          <div class="space-y-3">
+            <div class="seal-box px-1.5 py-2.5 text-xs font-brush rounded-xs">
+              苏轼之印
+            </div>
+            <div class="seal-solid px-1.5 py-2.5 text-xs font-brush rounded-xs">
+              东坡居士
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- 底部状态栏 -->
+  <footer class="relative z-20 px-10 py-3 flex items-center justify-between text-xs text-ink-light font-archaic border-t border-paper-wash/40 bg-paper-raw/50">
+    <div class="flex items-center gap-3">
+      <span class="seal-box px-1 text-[9px] font-brush">考据</span>
+      <span>标准ISO归一时间：1082-10-15T00:00:00.000Z · 历法：宋神宗元丰五年七月既望 (壬戌)</span>
+    </div>
+    <div>
+      <span>画境宗郭熙《林泉高致》· 逸韵承倪瓒</span>
+    </div>
+  </footer>
+
+  <!-- ==================== 素绢折页手札（Modals / Drawers） ==================== -->
+
+  <!-- 折页 1: 赤壁地望 (Geo Letter) -->
+  <div id="geoLetter" class="fixed inset-0 bg-ink-burnt/40 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-[#f7f0e3] max-w-xl w-full rounded-xl border border-paper-wash p-7 shadow-sheet relative flex flex-col gap-4">
+      <div class="flex items-center justify-between border-b border-paper-wash/80 pb-3">
+        <div class="flex items-center gap-2">
+          <span class="seal-solid px-2 py-0.5 text-xs font-brush">地望</span>
+          <h3 class="text-base font-bold font-song text-ink-burnt">赤壁夜游 · 郭熙平远图境</h3>
+        </div>
+        <button onclick="closeLetter('geoLetter')" class="text-ink-light hover:text-cinnabar text-lg font-brush">✕</button>
+      </div>
+
+      <div class="relative h-44 rounded-lg overflow-hidden border border-paper-wash bg-gradient-to-b from-[#1c2d3d] via-[#243d4f] to-[#14202b] p-4 flex flex-col justify-between">
+        <div class="absolute top-3 right-6 w-10 h-10 rounded-full bg-song-moon/90 shadow-[0_0_30px_rgba(254,246,216,0.8)]"></div>
+        <svg class="absolute bottom-0 left-0 right-0 w-full h-20 opacity-30 text-[#406a61]" viewBox="0 0 500 150" preserveAspectRatio="none">
+          <path d="M0,150 L0,70 Q120,20 240,60 T400,30 T500,70 L500,150 Z" fill="currentColor"></path>
+        </svg>
+
+        <div class="relative z-10 flex justify-between items-center text-xs">
+          <span class="px-2 py-0.5 rounded bg-paper-raw/90 border border-paper-wash text-ink-burnt font-archaic">
+            ● 舟溯江心 · 经纬 114.87°E, 30.44°N
+          </span>
+          <span class="text-paper-raw/90 font-archaic">月出东山 · 斗牛之间</span>
+        </div>
+
+        <div class="relative z-10 bg-paper-raw/95 backdrop-blur rounded p-2.5 border border-paper-wash text-xs flex justify-between items-center">
+          <div>
+            <div class="font-bold text-cinnabar font-song text-sm">【宋】黄州 赤鼻矶（文赤壁）</div>
+            <div class="text-ink-light font-archaic">【今】湖北省黄冈市黄州区东坡赤壁</div>
+          </div>
+          <div class="text-right font-archaic text-ink-heavy border-l border-paper-wash pl-3">
+            <div>乌台诗案贬谪第 3 年</div>
+            <div class="text-[10px] text-ink-light">黄州团练副使 (本州安置)</div>
+          </div>
+        </div>
+      </div>
+
+      <p class="text-xs text-ink-heavy font-song leading-relaxed">
+        郭熙在《林泉高致》中云：“山水有可行者，有可望者，有可游者，有可居者。” 苏轼夜游黄州赤鼻矶，虽知非三国周郎大战之武赤壁，然借景化境，使天地山川成为个体心灵的避难所与突围之地。
+      </p>
+
+      <div class="text-right pt-2 border-t border-paper-wash/60">
+        <button onclick="closeLetter('geoLetter')" class="seal-box px-4 py-1 text-xs font-brush hover:bg-cinnabar hover:text-paper-raw transition">
+          收卷
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 折页 2: 时代党争风云 (History Letter) -->
+  <div id="historyLetter" class="fixed inset-0 bg-ink-burnt/40 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-[#f7f0e3] max-w-lg w-full rounded-xl border border-paper-wash p-7 shadow-sheet relative flex flex-col gap-4">
+      <div class="flex items-center justify-between border-b border-paper-wash/80 pb-3">
+        <div class="flex items-center gap-2">
+          <span class="seal-solid px-2 py-0.5 text-xs font-brush">史料</span>
+          <h3 class="text-base font-bold font-song text-ink-burnt">熙宁变法与乌台诗案深渊</h3>
+        </div>
+        <button onclick="closeLetter('historyLetter')" class="text-ink-light hover:text-cinnabar text-lg font-brush">✕</button>
+      </div>
+
+      <div class="space-y-3 text-xs font-song leading-relaxed">
+        <div class="p-3 bg-paper-raw rounded border border-paper-wash space-y-1">
+          <span class="text-cinnabar font-bold font-archaic block">一、士大夫的政治绞杀</span>
+          <p class="text-ink-heavy">
+            王安石厉行新法，苏轼因陈奏“急政伤民”，为新党御史李定、舒亶所嫉恨。元丰二年八月，于湖州任上被捕押赴御史台狱。
+          </p>
+        </div>
+
+        <div class="p-3 bg-paper-raw rounded border border-paper-wash space-y-1">
+          <span class="text-song-ochre font-bold font-archaic block">二、百三十日生死一线</span>
+          <p class="text-ink-heavy">
+            狱中严刑拷问，苏轼自料必死，写下绝命诗诀别弟苏辙。后蒙太后与王安石一语营救，免死谪黄州。
+          </p>
+        </div>
+
+        <div class="p-3 bg-paper-raw rounded border border-paper-wash space-y-1">
+          <span class="text-song-green font-bold font-archaic block">三、荒凉黄州的严密监控</span>
+          <p class="text-ink-heavy">
+            “不得签书公事，不得擅离黄州”。苏轼写《赤壁赋》时，外表旷达，实则身处严密的政治禁锢与经济绝境之中。
+          </p>
+        </div>
+      </div>
+
+      <div class="text-right pt-2 border-t border-paper-wash/60">
+        <button onclick="closeLetter('historyLetter')" class="seal-box px-4 py-1 text-xs font-brush hover:bg-cinnabar hover:text-paper-raw transition">
+          阅毕
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 折页 3: 古今共鸣心镜 (Resonance Letter) -->
+  <div id="resonanceLetter" class="fixed inset-0 bg-ink-burnt/40 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-[#f7f0e3] max-w-lg w-full rounded-xl border border-paper-wash p-7 shadow-sheet relative flex flex-col gap-4">
+      <div class="flex items-center justify-between border-b border-paper-wash/80 pb-3">
+        <div class="flex items-center gap-2">
+          <span class="seal-solid px-2 py-0.5 text-xs font-brush">心镜</span>
+          <h3 class="text-base font-bold font-song text-ink-burnt">古今共鸣 · 当代精神突围</h3>
+        </div>
+        <button onclick="closeLetter('resonanceLetter')" class="text-ink-light hover:text-cinnabar text-lg font-brush">✕</button>
+      </div>
+
+      <div class="space-y-3.5 text-xs font-song leading-relaxed">
+        <div class="p-3.5 bg-paper-raw rounded border border-paper-wash">
+          <span class="text-cinnabar font-bold font-archaic block mb-1">【当代困境 · 平台清零与存在虚无】</span>
+          <p class="text-ink-heavy">
+            职场急剧动荡、奋斗半生的社会身份与平台瞬间剥离，面对“我是谁、我存在有何意义”的巨大虚无感。
+          </p>
+        </div>
+        <div class="p-3.5 bg-paper-raw rounded border border-paper-wash">
+          <span class="text-song-green font-bold font-archaic block mb-1">【东坡解法 · 齐物与自然无尽藏】</span>
+          <p class="text-ink-heavy">
+            “自其不变者而观之，则物与我皆无尽也。” 剥离外界强加的世俗标签与功名定义，向内扎根于真实的人间烟火与清风明月。天地不私一物，生命自有其不可剥夺的尊严。
+          </p>
+        </div>
+      </div>
+
+      <div class="text-right pt-2 border-t border-paper-wash/60">
+        <button onclick="closeLetter('resonanceLetter')" class="seal-box px-4 py-1 text-xs font-brush hover:bg-cinnabar hover:text-paper-raw transition">
+          领悟
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 折页 4: 段落全维心鉴折页 (Section Letter) -->
+  <div id="sectionLetter" class="fixed inset-0 bg-ink-burnt/40 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-[#f7f0e3] max-w-lg w-full rounded-xl border border-paper-wash p-7 shadow-sheet relative flex flex-col gap-4">
+      <div class="flex items-center justify-between border-b border-paper-wash/80 pb-3">
+        <div class="flex items-center gap-2">
+          <span id="secBadge" class="seal-solid px-2 py-0.5 text-xs font-brush">其一</span>
+          <h3 id="secTitle" class="text-base font-bold font-song text-ink-burnt">段落全维心鉴</h3>
+        </div>
+        <button onclick="closeLetter('sectionLetter')" class="text-ink-light hover:text-cinnabar text-lg font-brush">✕</button>
+      </div>
+
+      <div class="space-y-3 text-xs font-song leading-relaxed">
+        <div class="p-3 bg-paper-raw rounded border border-paper-wash space-y-1">
+          <span class="text-cinnabar font-bold font-archaic block">【朱批心鉴 · 情绪防御机制】</span>
+          <p id="secPsyText" class="text-ink-heavy"></p>
+        </div>
+
+        <div class="p-3 bg-paper-raw rounded border border-paper-wash space-y-1">
+          <span class="text-song-cyan font-bold font-archaic block">【文字背后 · 潜台词隐声】</span>
+          <p id="secSubtext" class="text-ink-heavy"></p>
+        </div>
+
+        <div class="p-3 bg-paper-raw rounded border border-paper-wash space-y-1">
+          <span class="text-song-ochre font-bold font-archaic block">【东坡手记 · 此时随笔】</span>
+          <p id="secSageReaction" class="text-ink-burnt"></p>
+        </div>
+      </div>
+
+      <div class="text-right pt-2 border-t border-paper-wash/60">
+        <button onclick="closeLetter('sectionLetter')" class="seal-box px-4 py-1 text-xs font-brush hover:bg-cinnabar hover:text-paper-raw transition">
+          收卷
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 卷末折页：与东坡先生书（先贤对谈） -->
+  <div id="sageDialogueDrawer" class="fixed inset-y-0 right-0 max-w-md w-full bg-[#f7f0e3] border-l border-paper-wash shadow-sheet z-50 transform translate-x-full transition-transform duration-300 flex flex-col justify-between p-7">
+    <div>
+      <div class="flex items-center justify-between border-b border-paper-wash/80 pb-3 mb-4">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-full seal-solid flex items-center justify-center font-brush text-sm shadow-seal">
+            坡
+          </div>
+          <div>
+            <h3 class="text-sm font-bold text-ink-burnt font-song">先贤信札 · 与东坡先生书</h3>
+            <p class="text-[10px] text-cinnabar font-archaic">黄州临皋亭夜话</p>
+          </div>
+        </div>
+        <button onclick="closeSageDialogue()" class="text-ink-light hover:text-cinnabar text-lg font-brush">✕</button>
+      </div>
+
+      <div id="sageChatArea" class="space-y-3 max-h-[calc(100vh-16rem)] overflow-y-auto pr-1 text-xs font-song leading-relaxed">
+        <div class="flex gap-2.5 items-start">
+          <div class="seal-solid w-5 h-5 rounded-xs flex items-center justify-center text-[10px] font-brush shrink-0 mt-0.5">坡</div>
+          <div class="bg-paper-raw p-3 rounded border border-paper-wash text-ink-burnt text-xs leading-relaxed shadow-sm">
+            后生见教了。老夫在黄州赤鼻矶夜饮，清风徐来，偶有感怀。你读此赋，见的是这江上水月，还是老夫这一腔块垒？
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pt-4 border-t border-paper-wash/80 space-y-2.5">
+      <div class="flex flex-wrap gap-1.5">
+        <button class="text-[10px] font-archaic px-2.5 py-1 rounded bg-paper-raw hover:bg-paper-cooked text-ink-heavy border border-paper-wash transition" onclick="askSage('先生身处绝境被贬黄州，如何真正做到不内耗？')">
+          ✦ 被贬黄州如何不内耗？
+        </button>
+        <button class="text-[10px] font-archaic px-2.5 py-1 rounded bg-paper-raw hover:bg-paper-cooked text-ink-heavy border border-paper-wash transition" onclick="askSage('赋中的吹箫之客，究竟是何许人也？')">
+          ✦ 吹箫之客究竟是谁？
+        </button>
+      </div>
+
+      <div class="flex items-center gap-1.5 bg-paper-raw rounded p-1.5 border border-paper-wash shadow-inner">
+        <input id="sageInput" type="text" placeholder="秉烛向东坡发问..." class="bg-transparent text-xs text-ink-burnt placeholder-ink-light font-song px-2 flex-1 focus:outline-none" onkeydown="if(event.key==='Enter') sendSageMsg()">
+        <button onclick="sendSageMsg()" class="seal-box px-3 py-1 text-xs font-brush hover:bg-cinnabar hover:text-paper-raw transition">
+          呈览
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+
+    const scrollContainer = document.getElementById('scrollContainer');
+
+    // 页面加载完毕后，自动定位到【最右侧的卷首】（符合中国古代手卷展卷初始习惯）
+    function initScrollToRight() {
+      if (scrollContainer) {
+        scrollContainer.scrollLeft = scrollContainer.scrollWidth - scrollContainer.clientWidth;
+      }
+    }
+    window.addEventListener('DOMContentLoaded', initScrollToRight);
+    window.addEventListener('load', () => setTimeout(initScrollToRight, 100));
+
+    // 鼠标滚轮优化：向下滚 = 向左展卷（推进阅读），向上滚 = 向右回看卷首
+    scrollContainer.addEventListener('wheel', (evt) => {
+      evt.preventDefault();
+      scrollContainer.scrollLeft -= evt.deltaY * 1.5;
+    }, { passive: false });
+
+    // 展卷导航控制
+    function scrollRoll(position) {
+      if (position === 'start') {
+        // 回到最右侧【卷首】
+        scrollContainer.scrollTo({ left: scrollContainer.scrollWidth - scrollContainer.clientWidth, behavior: 'smooth' });
+      } else if (position === 'end') {
+        // 去到最左侧【卷尾】
+        scrollContainer.scrollTo({ left: 0, behavior: 'smooth' });
+      } else if (position === 'unroll') {
+        // 向左展卷（推进阅读）
+        scrollContainer.scrollBy({ left: -320, behavior: 'smooth' });
+      }
+    }
+
+    // 全维数据
+    const sectionsData = [
+      {
+        badge: "其一",
+        title: "第一段 · 清风徐来，水月初升",
+        psyText: "乌台诗案九死一生，初到黄州时苏轼“惊魂未定，闭门谢客”。第一段中看似飘飘欲仙的轻盈（羽化登仙），实则是其饱受政治摧残后，将自我放逐于浩瀚大自然中的一种“防御性解脱”与感官自愈。",
+        subtext: "看似在描写神仙境界，实则是对现实政局的极度失望。既然在人间动辄得咎、九死一生，不如寄身江海，借大自然的浩大掩盖个体的创伤。",
+        sageReaction: "此段江上泛舟，老夫与二三好友随波流淌，心境看似超然独立，实则是卸下半生功名重负后的片刻喘息。"
+      },
+      {
+        badge: "其二",
+        title: "第二段 · 扣舷悲歌，箫声呜咽",
+        psyText: "“击空明兮溯流光，望美人兮天一方”。乐极往往悲来，月夜江波引发了对远方朝廷与帝王的复杂思念，压抑在潜意识底层的政治失落感借由箫声破防。",
+        subtext: "“望美人兮天一方”承屈原《离骚》之香草美人意象。箫声呜咽如泣如诉，直接刺破了刚刚建立的虚假平静，悲伤汹涌而出。",
+        sageReaction: "杨道士那洞箫一响，直戳老夫心窝。谁人心中没有放不下的‘美人’与未竟之志？"
+      },
+      {
+        badge: "其三",
+        title: "第三段 · 英雄安在，沧海一粟",
+        psyText: "借由客人之口，将个体放置在曹操横槊赋诗的历史长河与浩瀚宇宙中对比。‘寄蜉蝣于天地，渺沧海之一粟’是存在主义式的终极虚无感，也是苏轼内心最灰暗的深渊。",
+        subtext: "借客之问，苏轼直面最残酷的终极命题：连曹操这样的千古英雄都化为尘土，我等一介被贬文人，生命的须臾与痛苦又算得了什么？",
+        sageReaction: "当年曹操何等英雄，今安在哉？每次念及此处，老夫亦觉功名如过眼云烟，人生之须臾令人痛断肝肠。"
+      },
+      {
+        badge: "其四",
+        title: "第四段 · 水月之辩，造物无尽",
+        psyText: "苏轼哲学思考的高光时刻。以‘变与不变’辩证法化解虚无感，提出‘清风明月乃造物者之无尽藏’，完成从悲观虚无向审美自洽的精神突围。",
+        subtext: "惊世骇俗的哲学大突围！放弃对世俗官禄的虚妄执念，转身在天光云影中拥抱无尽自然，完成了中国文人最优雅的自我救赎。",
+        sageReaction: "天地之间，物各有主。既不能占有功名利禄，何不尽情享用这耳得之声、目遇之色？天地无尽，我亦无尽！"
+      },
+      {
+        badge: "其五",
+        title: "第五段 · 相与枕藉，东方既白",
+        psyText: "内心的‘理性超我’成功说服了‘悲观本我’，主客同欢，醉卧舟中。黑夜过去，东方既白，象征着精神危机圆满化解。",
+        subtext: "心结解开，天光破晓。大醉而眠，是苏东坡面对苦难命运时最坚韧的温柔。",
+        sageReaction: "哈哈！笑过饮过，天色已白。天大的愁苦，也抵不过与挚友在舟中大醉一场！"
+      }
+    ];
+
+    function openLetter(id) {
+      document.getElementById(id).classList.remove('hidden');
+    }
+    function closeLetter(id) {
+      document.getElementById(id).classList.add('hidden');
+    }
+
+    function openSectionLetter(index) {
+      const d = sectionsData[index];
+      document.getElementById('secBadge').textContent = d.badge;
+      document.getElementById('secTitle').textContent = d.title;
+      document.getElementById('secPsyText').textContent = d.psyText;
+      document.getElementById('secSubtext').textContent = d.subtext;
+      document.getElementById('secSageReaction').textContent = d.sageReaction;
+      openLetter('sectionLetter');
+    }
+
+    function openSageDialogue() {
+      document.getElementById('sageDialogueDrawer').classList.remove('translate-x-full');
+    }
+    function closeSageDialogue() {
+      document.getElementById('sageDialogueDrawer').classList.add('translate-x-full');
+    }
+
+    function askSage(q) {
+      document.getElementById('sageInput').value = q;
+      sendSageMsg();
+    }
+
+    function sendSageMsg() {
+      const input = document.getElementById('sageInput');
+      const text = input.value.trim();
+      if (!text) return;
+
+      const chat = document.getElementById('sageChatArea');
+      
+      const userDiv = document.createElement('div');
+      userDiv.className = "flex gap-2.5 items-start justify-end";
+      userDiv.innerHTML = `
+        <div class="bg-paper-cooked p-3 rounded border border-paper-wash text-ink-burnt text-xs leading-relaxed max-w-[85%] shadow-sm">
+          ${text}
+        </div>
+        <div class="seal-box w-5 h-5 rounded-xs flex items-center justify-center text-[10px] font-brush shrink-0 mt-0.5">生</div>
+      `;
+      chat.appendChild(userDiv);
+      input.value = '';
+      chat.scrollTop = chat.scrollHeight;
+
+      setTimeout(() => {
+        let reply = "";
+        if (text.includes("内耗") || text.includes("绝境") || text.includes("贬")) {
+          reply = "后生问得极好。老夫当年在御史台狱中，自料必死。到了黄州，身无分文，一家老小嗷嗷待哺。若论‘内耗’，天底下谁能比老夫更甚？老夫的做法唯有八个字：‘躬耕东坡，顺逆由心’。去东坡开荒种麦，给家人煮红烧肉，在江边吹风看月。莫把世俗给你的‘贬谪标签’当成你生命的全部！";
+        } else if (text.includes("吹箫之客") || text.includes("客")) {
+          reply = "同行者乃道士杨世昌也。但在老夫笔下，这‘客’何尝不是老夫自己的另一个化身？老夫心中有曹操一般的功名雄心，也有对生死须臾的畏惧，借主客问答，不过是老夫在与自己心中的魔障搏斗罢了。";
+        } else {
+          reply = `你所言“${text}”，老夫深有所思。世事一场大梦，人生几度秋凉。无论身处何等境地，清风明月总不负你，莫愁莫惧，且饮一杯！`;
+        }
+
+        const sageDiv = document.createElement('div');
+        sageDiv.className = "flex gap-2.5 items-start animate-fadeIn";
+        sageDiv.innerHTML = `
+          <div class="seal-solid w-5 h-5 rounded-xs flex items-center justify-center text-[10px] font-brush shrink-0 mt-0.5">坡</div>
+          <div class="bg-paper-raw p-3 rounded border border-paper-wash text-ink-burnt text-xs leading-relaxed shadow-sm">
+            ${reply}
+          </div>
+        `;
+        chat.appendChild(sageDiv);
+        chat.scrollTop = chat.scrollHeight;
+      }, 400);
+    }
+  </script>
+</body>
+</html>
