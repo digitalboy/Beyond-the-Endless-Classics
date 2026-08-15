@@ -6,53 +6,15 @@ import { fetchAuthorsFromCloud } from '@/lib/api-client';
 import { TraditionalCard } from '@/components/ui/traditional-card';
 
 // ─────────────────────────────────────────────────────────────
-// 回纹 (Chinese meander / key pattern) 圆形装饰边框
-// NOTE: 模块级预计算 SVG path，避免每次渲染重复运算。
-// 原理：在外环半径 oR 与内环半径 iR 之间生成锯齿状环形路径，
-// 填充后呈现出传统 回纹 纹饰效果，用于装饰先贤肖像外框。
+// 联珠纹 (pearl-chain) 古典圆形装饰边框
+// NOTE: 灵感源自唐代丝绸纹样与铜镜联珠纹饰。
+// 双环细线之间均匀排列小圆珠，四方位点缀如意卷草结。
 // ─────────────────────────────────────────────────────────────
-const MEANDER_SVG_SIZE = 176;
-const MEANDER_CENTER = MEANDER_SVG_SIZE / 2; // 88
-const MEANDER_OUTER_R = 84;
-const MEANDER_INNER_R = 73;
-const MEANDER_TEETH = 24;
-
-function computeMeanderRingPath(): string {
-  const cx = MEANDER_CENTER;
-  const cy = MEANDER_CENTER;
-  const oR = MEANDER_OUTER_R;
-  const iR = MEANDER_INNER_R;
-  const n = MEANDER_TEETH;
-  let d = '';
-
-  for (let i = 0; i < n; i++) {
-    const a1 = (2 * Math.PI / n) * i - Math.PI / 2;
-    const aMid = (2 * Math.PI / n) * (i + 0.5) - Math.PI / 2;
-    const a2 = (2 * Math.PI / n) * (i + 1) - Math.PI / 2;
-
-    const ox1 = cx + oR * Math.cos(a1);
-    const oy1 = cy + oR * Math.sin(a1);
-    const oxM = cx + oR * Math.cos(aMid);
-    const oyM = cy + oR * Math.sin(aMid);
-    const ixM = cx + iR * Math.cos(aMid);
-    const iyM = cy + iR * Math.sin(aMid);
-    const ix2 = cx + iR * Math.cos(a2);
-    const iy2 = cy + iR * Math.sin(a2);
-    const ox2 = cx + oR * Math.cos(a2);
-    const oy2 = cy + oR * Math.sin(a2);
-
-    if (i === 0) d += `M ${ox1.toFixed(1)},${oy1.toFixed(1)} `;
-    d += `A ${oR},${oR} 0 0,1 ${oxM.toFixed(1)},${oyM.toFixed(1)} `;
-    d += `L ${ixM.toFixed(1)},${iyM.toFixed(1)} `;
-    d += `A ${iR},${iR} 0 0,1 ${ix2.toFixed(1)},${iy2.toFixed(1)} `;
-    d += `L ${ox2.toFixed(1)},${oy2.toFixed(1)} `;
-  }
-
-  d += 'Z';
-  return d;
-}
-
-const MEANDER_RING_PATH = computeMeanderRingPath();
+const FRAME_SVG_SIZE = 176;
+const FRAME_CENTER = FRAME_SVG_SIZE / 2; // 88
+const FRAME_PEARL_R = 80;   // 联珠排列半径
+const FRAME_PEARL_COUNT = 36; // 珠数
+const FRAME_PEARL_DOT_R = 1.3; // 每颗珠子半径
 
 interface SagePantheonProps {
   onSelectSage: (sageId: string) => void;
@@ -116,20 +78,51 @@ export const SagePantheon: React.FC<SagePantheonProps> = ({ onSelectSage }) => {
                     </span>
                   </div>
 
-                  {/* 水墨肖像 + 回纹圆形装饰边框 */}
+                  {/* 水墨肖像 + 联珠纹古典圆形装饰边框 */}
                   <div className="relative w-44 h-44 flex items-center justify-center mb-3 transition-transform duration-700 group-hover:scale-105">
-                    {/* 回纹 (meander) 装饰环 SVG */}
+                    {/* 联珠纹 (pearl-chain) 装饰环 SVG */}
                     <svg
-                      viewBox={`0 0 ${MEANDER_SVG_SIZE} ${MEANDER_SVG_SIZE}`}
-                      className="absolute inset-0 w-full h-full text-cinnabar/30 group-hover:text-cinnabar/70 transition-colors duration-700"
+                      viewBox={`0 0 ${FRAME_SVG_SIZE} ${FRAME_SVG_SIZE}`}
+                      className="absolute inset-0 w-full h-full text-cinnabar/25 group-hover:text-cinnabar/60 transition-colors duration-700"
                       aria-hidden="true"
                     >
-                      {/* 外圈纤细点睛线 */}
-                      <circle cx={MEANDER_CENTER} cy={MEANDER_CENTER} r={MEANDER_OUTER_R + 2} fill="none" stroke="currentColor" strokeWidth="0.7" />
-                      {/* 回纹齿形环带 (核心纹饰) */}
-                      <path d={MEANDER_RING_PATH} fill="currentColor" />
-                      {/* 内圈纤细点睛线 */}
-                      <circle cx={MEANDER_CENTER} cy={MEANDER_CENTER} r={MEANDER_INNER_R - 1} fill="none" stroke="currentColor" strokeWidth="0.7" />
+                      {/* 外圈细线 */}
+                      <circle cx={FRAME_CENTER} cy={FRAME_CENTER} r={FRAME_PEARL_R + 4} fill="none" stroke="currentColor" strokeWidth="0.6" />
+                      {/* 外圈第二道细线 (双线框定) */}
+                      <circle cx={FRAME_CENTER} cy={FRAME_CENTER} r={FRAME_PEARL_R + 2.5} fill="none" stroke="currentColor" strokeWidth="0.4" />
+
+                      {/* 联珠纹圆点环 */}
+                      {Array.from({ length: FRAME_PEARL_COUNT }).map((_, i) => {
+                        const angle = (2 * Math.PI / FRAME_PEARL_COUNT) * i - Math.PI / 2;
+                        return (
+                          <circle
+                            key={i}
+                            cx={FRAME_CENTER + FRAME_PEARL_R * Math.cos(angle)}
+                            cy={FRAME_CENTER + FRAME_PEARL_R * Math.sin(angle)}
+                            r={FRAME_PEARL_DOT_R}
+                            fill="currentColor"
+                          />
+                        );
+                      })}
+
+                      {/* 内圈第一道细线 */}
+                      <circle cx={FRAME_CENTER} cy={FRAME_CENTER} r={FRAME_PEARL_R - 2.5} fill="none" stroke="currentColor" strokeWidth="0.4" />
+                      {/* 内圈细线 */}
+                      <circle cx={FRAME_CENTER} cy={FRAME_CENTER} r={FRAME_PEARL_R - 4} fill="none" stroke="currentColor" strokeWidth="0.6" />
+
+                      {/* 四方如意结装饰 (上下左右四个方位) */}
+                      {[0, 90, 180, 270].map((deg) => (
+                        <g key={deg} transform={`rotate(${deg}, ${FRAME_CENTER}, ${FRAME_CENTER})`}>
+                          {/* 顶部如意卷草小花 */}
+                          <path
+                            d={`M ${FRAME_CENTER},${FRAME_CENTER - FRAME_PEARL_R - 6}
+                                c -2.5,0 -4,1.8 -4,3.5 c 0,1.8 2,3 4,1.5
+                                c 2,1.5 4,0.3 4,-1.5 c 0,-1.7 -1.5,-3.5 -4,-3.5 z`}
+                            fill="currentColor"
+                            opacity="0.8"
+                          />
+                        </g>
+                      ))}
                     </svg>
 
                     {/* 人物肖像圆形容器 (居中于回纹环内) */}
