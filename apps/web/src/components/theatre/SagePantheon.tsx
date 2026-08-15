@@ -14,7 +14,7 @@ const FRAME_SVG_SIZE = 176;
 const FRAME_CENTER = FRAME_SVG_SIZE / 2; // 88
 const FRAME_PEARL_R = 80;   // 联珠排列半径
 const FRAME_PEARL_COUNT = 36; // 珠数
-const FRAME_PEARL_DOT_R = 1.3; // 每颗珠子半径
+const FRAME_PEARL_DOT_R = 1.8; // 每颗珠子半径 (加粗后更温润)
 
 interface SagePantheonProps {
   onSelectSage: (sageId: string) => void;
@@ -83,13 +83,13 @@ export const SagePantheon: React.FC<SagePantheonProps> = ({ onSelectSage }) => {
                     {/* 联珠纹 (pearl-chain) 装饰环 SVG */}
                     <svg
                       viewBox={`0 0 ${FRAME_SVG_SIZE} ${FRAME_SVG_SIZE}`}
-                      className="absolute inset-0 w-full h-full text-cinnabar/25 group-hover:text-cinnabar/60 transition-colors duration-700"
+                      className="absolute inset-0 w-full h-full text-paper-wash group-hover:text-[#b09570] transition-colors duration-700"
                       aria-hidden="true"
                     >
                       {/* 外圈细线 */}
-                      <circle cx={FRAME_CENTER} cy={FRAME_CENTER} r={FRAME_PEARL_R + 4} fill="none" stroke="currentColor" strokeWidth="0.6" />
+                      <circle cx={FRAME_CENTER} cy={FRAME_CENTER} r={FRAME_PEARL_R + 4} fill="none" stroke="currentColor" strokeWidth="1" />
                       {/* 外圈第二道细线 (双线框定) */}
-                      <circle cx={FRAME_CENTER} cy={FRAME_CENTER} r={FRAME_PEARL_R + 2.5} fill="none" stroke="currentColor" strokeWidth="0.4" />
+                      <circle cx={FRAME_CENTER} cy={FRAME_CENTER} r={FRAME_PEARL_R + 2.2} fill="none" stroke="currentColor" strokeWidth="0.6" />
 
                       {/* 联珠纹圆点环 */}
                       {Array.from({ length: FRAME_PEARL_COUNT }).map((_, i) => {
@@ -106,9 +106,9 @@ export const SagePantheon: React.FC<SagePantheonProps> = ({ onSelectSage }) => {
                       })}
 
                       {/* 内圈第一道细线 */}
-                      <circle cx={FRAME_CENTER} cy={FRAME_CENTER} r={FRAME_PEARL_R - 2.5} fill="none" stroke="currentColor" strokeWidth="0.4" />
+                      <circle cx={FRAME_CENTER} cy={FRAME_CENTER} r={FRAME_PEARL_R - 2.2} fill="none" stroke="currentColor" strokeWidth="0.6" />
                       {/* 内圈细线 */}
-                      <circle cx={FRAME_CENTER} cy={FRAME_CENTER} r={FRAME_PEARL_R - 4} fill="none" stroke="currentColor" strokeWidth="0.6" />
+                      <circle cx={FRAME_CENTER} cy={FRAME_CENTER} r={FRAME_PEARL_R - 4} fill="none" stroke="currentColor" strokeWidth="1" />
 
                       {/* 四方如意结装饰 (上下左右四个方位) */}
                       {[0, 90, 180, 270].map((deg) => (

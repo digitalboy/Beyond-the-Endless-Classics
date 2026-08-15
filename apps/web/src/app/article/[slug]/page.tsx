@@ -36,13 +36,22 @@ export default async function ArticleScrollPage({ params }: ArticlePageProps) {
   return (
     <main className="min-h-screen bg-paper-warm text-ink-burnt flex flex-col relative overflow-x-hidden">
       {/* 顶部控制栏 */}
-      <header className="sticky top-0 z-30 bg-paper-raw/90 backdrop-blur border-b border-paper-wash px-8 py-4 flex items-center justify-between shadow-xs">
-        <Link
-          href="/"
-          className="flex items-center gap-2 text-xs font-archaic text-ink-heavy hover:text-cinnabar transition px-3 py-1.5 rounded-lg bg-paper-cooked border border-paper-wash"
-        >
-          <span>◀ 返回先贤短剧舞台</span>
-        </Link>
+      <header className="sticky top-0 z-30 bg-paper-raw/90 backdrop-blur border-b border-paper-wash px-8 py-3.5 flex items-center justify-between shadow-xs">
+        <div className="flex items-center gap-4">
+          <Link href="/" className="flex items-center gap-2 group">
+            <img
+              src="/assets/logo.jfif"
+              alt="古文观不止"
+              className="h-10 w-auto mix-blend-multiply object-contain transition-transform duration-500 group-hover:scale-105 select-none"
+            />
+          </Link>
+          <Link
+            href="/"
+            className="flex items-center gap-1.5 text-xs font-archaic text-ink-heavy hover:text-cinnabar transition px-3 py-1.5 rounded-lg bg-paper-cooked border border-paper-wash"
+          >
+            <span>◀ 先贤剧场</span>
+          </Link>
+        </div>
 
         <div className="flex items-center gap-3">
           <span className="seal-solid px-2 py-0.5 text-xs font-brush">{article.dynasty}</span>
