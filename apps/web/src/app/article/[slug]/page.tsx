@@ -38,11 +38,11 @@ export default async function ArticleScrollPage({ params }: ArticlePageProps) {
       {/* 顶部控制栏 */}
       <header className="sticky top-0 z-30 bg-paper-raw/90 backdrop-blur border-b border-paper-wash px-8 py-3.5 flex items-center justify-between shadow-xs">
         <div className="flex items-center gap-4">
-          <Link href="/" className="flex items-center gap-2 group">
+          <Link href="/" className="flex items-center group">
             <img
-              src="/assets/logo.jfif"
+              src="/assets/logo-remove-bg.png"
               alt="古文观不止"
-              className="h-10 w-auto mix-blend-multiply object-contain transition-transform duration-500 group-hover:scale-105 select-none"
+              className="h-9 w-auto object-contain transition-transform duration-500 group-hover:scale-105 select-none"
             />
           </Link>
           <Link

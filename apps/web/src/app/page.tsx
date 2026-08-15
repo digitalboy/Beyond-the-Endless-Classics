@@ -58,18 +58,15 @@ export default function HomePage() {
       {/* 顶部素雅题签 */}
       <header className="relative z-40 px-8 py-3.5 flex items-center justify-between border-b border-paper-wash/60 bg-paper-raw/90 backdrop-blur-md shadow-xs">
         <div className="flex items-center gap-4">
-          {/* 水墨手书 Logo (正片叠底过滤白底，完美融入宣纸) */}
-          <Link href="/" className="flex items-center gap-3 group">
-            <div className="seal-solid px-2.5 py-1 text-xs font-brush rounded-xs shadow-seal tracking-widest self-center">
-              观不止
-            </div>
+          {/* 横向无背景水墨手书 Logo */}
+          <Link href="/" className="flex items-center group">
             <img
-              src="/assets/logo.jfif"
+              src="/assets/logo-remove-bg.png"
               alt="古文观不止"
-              className="h-12 w-auto mix-blend-multiply object-contain transition-transform duration-500 group-hover:scale-105 select-none"
+              className="h-10 w-auto object-contain transition-transform duration-500 group-hover:scale-105 select-none"
             />
           </Link>
-          <div className="hidden sm:flex items-center border-l border-paper-wash/80 pl-4">
+          <div className="hidden sm:flex items-center border-l border-paper-wash/80 pl-4 py-1">
             <span className="text-xs font-archaic text-ink-light tracking-[0.2em]">
               文止于此，人观不止。
             </span>
