@@ -41,7 +41,7 @@ export const SagePantheon: React.FC<SagePantheonProps> = ({ onSelectSage }) => {
         </p>
       </div>
 
-      {/* 先贤卡片阵列 (采用中式如意卷云纹饰卡片) */}
+      {/* 先贤卡片阵列 (采用古典门券与宝相花纹饰自适应卡片) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl w-full relative z-10">
         {loading && cloudAuthors.length === 0 ? (
           <div className="col-span-full py-16 text-center text-ink-light font-archaic text-sm animate-pulse">
@@ -55,53 +55,61 @@ export const SagePantheon: React.FC<SagePantheonProps> = ({ onSelectSage }) => {
               <TraditionalCard
                 key={author.id}
                 onClick={() => onSelectSage(author.id)}
-                className="w-full"
-                contentClassName="items-center text-center pt-6 pb-6 px-4"
+                className="w-full min-h-[450px]"
+                contentClassName="items-center text-center justify-between"
               >
-                <div className="absolute top-3 right-3 seal-solid px-2 py-0.5 text-[10px] font-brush z-30 shadow-xs">
-                  {author.dynasty}
-                </div>
-
-                {/* 水墨肖像容器 (苏轼为双态淡入淡出，其他先贤为水墨印章) */}
-                <div className="w-28 h-28 rounded-full border-2 border-paper-wash group-hover:border-cinnabar overflow-hidden mt-1 mb-3 transition-all duration-700 group-hover:scale-105 shadow-inner bg-paper-cooked relative flex items-center justify-center">
-                  {isSuShi ? (
-                    <>
-                      {/* 图 1 (默认态)：低头看书 */}
-                      <img
-                        src="/assets/su_shi_reading.jpg"
-                        alt="苏轼展卷沉读"
-                        className="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-700 ease-in-out opacity-100 group-hover:opacity-0"
-                      />
-                      {/* 图 2 (悬浮态)：抬头望向读者 */}
-                      <img
-                        src="/assets/su_shi_looking.jpg"
-                        alt="苏轼抬头注视"
-                        className="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-700 ease-in-out opacity-0 group-hover:opacity-100"
-                      />
-                      <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent pointer-events-none z-20" />
-                      <span className="absolute bottom-1.5 z-20 text-[10px] font-archaic text-paper-raw tracking-widest transition-all duration-500 group-hover:text-amber-200">
-                        <span className="group-hover:hidden">✦ 沉吟展读</span>
-                        <span className="hidden group-hover:inline">✦ 抬首相望</span>
-                      </span>
-                    </>
-                  ) : (
-                    <span className="text-4xl font-brush text-ink-thick group-hover:text-cinnabar transition">
-                      {author.name.slice(-1)}
+                {/* 上半部：朝代题签与水墨肖像 */}
+                <div className="flex flex-col items-center w-full">
+                  {/* 朝代内嵌朱文印章 (居中雅致，绝不遮挡门券线条) */}
+                  <div className="mb-2">
+                    <span className="seal-solid px-2 py-0.5 text-[10px] font-brush shadow-xs">
+                      {author.dynasty}
                     </span>
-                  )}
+                  </div>
+
+                  {/* 水墨肖像容器 (苏轼为双态淡入淡出，其他先贤为水墨印章) */}
+                  <div className="w-24 h-24 rounded-full border-2 border-paper-wash group-hover:border-cinnabar overflow-hidden mb-2.5 transition-all duration-700 group-hover:scale-105 shadow-inner bg-paper-cooked relative flex items-center justify-center">
+                    {isSuShi ? (
+                      <>
+                        {/* 图 1 (默认态)：低头看书 */}
+                        <img
+                          src="/assets/su_shi_reading.jpg"
+                          alt="苏轼展卷沉读"
+                          className="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-700 ease-in-out opacity-100 group-hover:opacity-0"
+                        />
+                        {/* 图 2 (悬浮态)：抬头望向读者 */}
+                        <img
+                          src="/assets/su_shi_looking.jpg"
+                          alt="苏轼抬头注视"
+                          className="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-700 ease-in-out opacity-0 group-hover:opacity-100"
+                        />
+                        <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent pointer-events-none z-20" />
+                        <span className="absolute bottom-1 z-20 text-[9px] font-archaic text-paper-raw tracking-widest transition-all duration-500 group-hover:text-amber-200">
+                          <span className="group-hover:hidden">✦ 沉吟展读</span>
+                          <span className="hidden group-hover:inline">✦ 抬首相望</span>
+                        </span>
+                      </>
+                    ) : (
+                      <span className="text-4xl font-brush text-ink-thick group-hover:text-cinnabar transition">
+                        {author.name.slice(-1)}
+                      </span>
+                    )}
+                  </div>
+
+                  {/* 名讳与字号 */}
+                  <h3 className="text-xl font-bold font-song tracking-widest text-ink-burnt group-hover:text-cinnabar transition">
+                    {author.name}
+                  </h3>
+                  <p className="text-[11px] font-archaic text-cinnabar mt-0.5">
+                    {author.courtesyName ? `字${author.courtesyName}` : ''} {author.artName ? `· 号${author.artName}` : ''}
+                  </p>
+                  <p className="text-xs font-song text-ink-light mt-2 leading-relaxed line-clamp-2 px-1">
+                    {author.biographySummary}
+                  </p>
                 </div>
 
-                <h3 className="text-xl font-bold font-song tracking-widest text-ink-burnt group-hover:text-cinnabar transition">
-                  {author.name}
-                </h3>
-                <p className="text-[11px] font-archaic text-cinnabar mt-0.5">
-                  {author.courtesyName ? `字${author.courtesyName}` : ''} {author.artName ? `· 号${author.artName}` : ''}
-                </p>
-                <p className="text-xs font-song text-ink-light mt-2 leading-relaxed line-clamp-2 px-1">
-                  {author.biographySummary}
-                </p>
-
-                <div className="mt-4 px-3.5 py-1 rounded-full border border-cinnabar/60 group-hover:bg-cinnabar group-hover:text-paper-raw text-xs font-brush text-cinnabar transition-all flex items-center gap-1 shadow-xs">
+                {/* 下半部：启封按钮 (安全居于底部宝相花上方) */}
+                <div className="mt-4 mb-1 px-4 py-1.5 rounded-full border border-cinnabar/60 group-hover:bg-cinnabar group-hover:text-paper-raw text-xs font-brush text-cinnabar transition-all flex items-center gap-1.5 shadow-xs">
                   <span>启封生命短剧</span>
                   <span className="text-xs">➔</span>
                 </div>

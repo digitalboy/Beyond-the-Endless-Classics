@@ -150,86 +150,86 @@ export const TraditionalCard: React.FC<TraditionalCardProps> = ({
           {/* 顶部中式宝相花与对称卷草纹 */}
           {showOrnaments && (
             <g
-              transform={`translate(${w / 2}, ${inTopPeakY + 14})`}
+              transform={`translate(${w / 2}, ${inTopPeakY + 16})`}
               className="text-paper-wash transition-colors duration-500 group-hover:text-cinnabar"
             >
               {/* 中央宝相莲蕾 */}
-              <path d="M 0,-10 C -2,-6.5 -3,-1.5 0,1 C 3,-1.5 2,-6.5 0,-10 Z" fill="currentColor" />
+              <path d="M 0,-9 C -1.8,-6 -2.8,-1.5 0,1 C 2.8,-1.5 1.8,-6 0,-9 Z" fill="currentColor" />
               <path
-                d="M -2,-3.5 C -5,-5.5 -7,-2.5 -6,0 C -4,2 -1,0.8 0,0.8 C 1,0.8 4,2 6,0 C 7,-2.5 5,-5.5 2,-3.5"
+                d="M -2,-3 C -4.5,-5 -6.5,-2.2 -5.5,0.2 C -3.8,1.8 -1,0.8 0,0.8 C 1,0.8 3.8,1.8 5.5,0.2 C 6.5,-2.2 4.5,-5 2,-3"
                 fill="currentColor"
                 opacity="0.9"
               />
 
               {/* 左侧 S 型古典卷草 */}
               <path
-                d="M -2, 0.8 C -8, 0.8 -14,-5 -20,-2 C -24, 0 -21, 5 -16, 3 C -12, 1.5 -13,-1.5 -17.5,-0.8"
+                d="M -2, 0.8 C -7, 0.8 -12,-4 -17,-1.5 C -20.5, 0.2 -18, 4.5 -14, 2.8 C -10.5, 1.2 -11,-1.5 -15,-0.8"
                 stroke="currentColor"
-                strokeWidth="1.3"
+                strokeWidth="1.2"
                 fill="none"
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
-              <circle cx="-20" cy="-2" r="1.1" fill="currentColor" />
+              <circle cx="-17" cy="-1.5" r="1" fill="currentColor" />
 
               {/* 右侧 S 型古典卷草 */}
               <path
-                d="M 2, 0.8 C 8, 0.8 14,-5 20,-2 C 24, 0 21, 5 16, 3 C 12, 1.5 13,-1.5 17.5,-0.8"
+                d="M 2, 0.8 C 7, 0.8 12,-4 17,-1.5 C 20.5, 0.2 18, 4.5 14, 2.8 C 10.5, 1.2 11,-1.5 15,-0.8"
                 stroke="currentColor"
-                strokeWidth="1.3"
+                strokeWidth="1.2"
                 fill="none"
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
-              <circle cx="20" cy="-2" r="1.1" fill="currentColor" />
+              <circle cx="17" cy="-1.5" r="1" fill="currentColor" />
             </g>
           )}
 
           {/* 底部中式宝相花对称镜像 */}
           {showOrnaments && (
             <g
-              transform={`translate(${w / 2}, ${h - inTopPeakY - 14}) scale(1, -1)`}
+              transform={`translate(${w / 2}, ${h - inTopPeakY - 16}) scale(1, -1)`}
               className="text-paper-wash transition-colors duration-500 group-hover:text-cinnabar"
             >
               {/* 中央宝相莲蕾 */}
-              <path d="M 0,-10 C -2,-6.5 -3,-1.5 0,1 C 3,-1.5 2,-6.5 0,-10 Z" fill="currentColor" />
+              <path d="M 0,-9 C -1.8,-6 -2.8,-1.5 0,1 C 2.8,-1.5 1.8,-6 0,-9 Z" fill="currentColor" />
               <path
-                d="M -2,-3.5 C -5,-5.5 -7,-2.5 -6,0 C -4,2 -1,0.8 0,0.8 C 1,0.8 4,2 6,0 C 7,-2.5 5,-5.5 2,-3.5"
+                d="M -2,-3 C -4.5,-5 -6.5,-2.2 -5.5,0.2 C -3.8,1.8 -1,0.8 0,0.8 C 1,0.8 3.8,1.8 5.5,0.2 C 6.5,-2.2 4.5,-5 2,-3"
                 fill="currentColor"
                 opacity="0.9"
               />
 
               {/* 左侧 S 型古典卷草 */}
               <path
-                d="M -2, 0.8 C -8, 0.8 -14,-5 -20,-2 C -24, 0 -21, 5 -16, 3 C -12, 1.5 -13,-1.5 -17.5,-0.8"
+                d="M -2, 0.8 C -7, 0.8 -12,-4 -17,-1.5 C -20.5, 0.2 -18, 4.5 -14, 2.8 C -10.5, 1.2 -11,-1.5 -15,-0.8"
                 stroke="currentColor"
-                strokeWidth="1.3"
+                strokeWidth="1.2"
                 fill="none"
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
-              <circle cx="-20" cy="-2" r="1.1" fill="currentColor" />
+              <circle cx="-17" cy="-1.5" r="1" fill="currentColor" />
 
               {/* 右侧 S 型古典卷草 */}
               <path
-                d="M 2, 0.8 C 8, 0.8 14,-5 20,-2 C 24, 0 21, 5 16, 3 C 12, 1.5 13,-1.5 17.5,-0.8"
+                d="M 2, 0.8 C 7, 0.8 12,-4 17,-1.5 C 20.5, 0.2 18, 4.5 14, 2.8 C 10.5, 1.2 11,-1.5 15,-0.8"
                 stroke="currentColor"
-                strokeWidth="1.3"
+                strokeWidth="1.2"
                 fill="none"
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
-              <circle cx="20" cy="-2" r="1.1" fill="currentColor" />
+              <circle cx="17" cy="-1.5" r="1" fill="currentColor" />
             </g>
           )}
         </svg>
       )}
 
-      {/* 卡片内部内容插槽 */}
+      {/* 卡片内部内容插槽 (预留顶底宝相花避让安全区域) */}
       <div
         className={cn(
           'relative z-10 w-full flex-1 flex flex-col',
-          showOrnaments ? 'pt-7 pb-6 px-4' : 'p-4',
+          showOrnaments ? 'pt-12 pb-11 px-5' : 'p-5',
           contentClassName
         )}
       >
