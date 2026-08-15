@@ -405,13 +405,13 @@ export const DestinyStage: React.FC<DestinyStageProps> = ({
         </div>
       </div>
 
-      {/* 第三幕：当年手札破墨飞入 (实时直连云端 D1 篇目) */}
+      {/* 第三幕：当年手札破墨飞入 */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="seal-solid px-2 py-0.5 text-xs font-brush">第三幕</div>
             <h3 className="text-lg font-bold font-song text-ink-burnt tracking-widest">
-              【{profile.name}】当年散落之手泽信札 (云端 D1 数据库实时直连)
+              【{profile.name}】当年散落之手泽信札
             </h3>
           </div>
           <span className="text-xs font-archaic text-ink-light">
@@ -422,8 +422,8 @@ export const DestinyStage: React.FC<DestinyStageProps> = ({
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {loadingArticles ? (
             <div className="col-span-full py-12 text-center text-ink-light font-archaic text-sm animate-pulse">
-              <span className="seal-box px-3 py-1 text-xs font-brush text-cinnabar">篇目检索</span>
-              <p className="mt-2">正在从 Cloudflare D1 边缘数据库调取当年传世手札...</p>
+              <span className="seal-box px-3 py-1 text-xs font-brush text-cinnabar">展卷中</span>
+              <p className="mt-2">正在展开当年传世手札...</p>
             </div>
           ) : cloudArticles.length === 0 ? (
             <div className="col-span-full py-8 text-center text-ink-light font-archaic text-sm">
