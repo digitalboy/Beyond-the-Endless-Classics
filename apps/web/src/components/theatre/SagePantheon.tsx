@@ -60,15 +60,15 @@ export const SagePantheon: React.FC<SagePantheonProps> = ({ onSelectSage }) => {
               >
                 {/* 上半部：朝代题签与水墨肖像 */}
                 <div className="flex flex-col items-center w-full">
-                  {/* 朝代内嵌朱文印章 (居中雅致，绝不遮挡门券线条) */}
+                  {/* 朝代内嵌朱文印章 */}
                   <div className="mb-2">
-                    <span className="seal-solid px-2 py-0.5 text-[10px] font-brush shadow-xs">
+                    <span className="seal-solid px-2.5 py-0.5 text-[11px] font-brush shadow-xs tracking-wider">
                       {author.dynasty}
                     </span>
                   </div>
 
-                  {/* 水墨肖像容器 (苏轼为双态淡入淡出，其他先贤为水墨印章) */}
-                  <div className="w-24 h-24 rounded-full border-2 border-paper-wash group-hover:border-cinnabar overflow-hidden mb-2.5 transition-all duration-700 group-hover:scale-105 shadow-inner bg-paper-cooked relative flex items-center justify-center">
+                  {/* 水墨肖像容器 (放大至 w-36 h-36，细节更震撼清晰) */}
+                  <div className="w-36 h-36 rounded-full border-2 border-paper-wash group-hover:border-cinnabar overflow-hidden mb-3.5 transition-all duration-700 group-hover:scale-105 shadow-md bg-paper-cooked relative flex items-center justify-center">
                     {isSuShi ? (
                       <>
                         {/* 图 1 (默认态)：低头看书 */}
@@ -84,32 +84,32 @@ export const SagePantheon: React.FC<SagePantheonProps> = ({ onSelectSage }) => {
                           className="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-700 ease-in-out opacity-0 group-hover:opacity-100"
                         />
                         <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent pointer-events-none z-20" />
-                        <span className="absolute bottom-1 z-20 text-[9px] font-archaic text-paper-raw tracking-widest transition-all duration-500 group-hover:text-amber-200">
+                        <span className="absolute bottom-1.5 z-20 text-[10px] font-archaic text-paper-raw tracking-widest transition-all duration-500 group-hover:text-amber-200">
                           <span className="group-hover:hidden">✦ 沉吟展读</span>
                           <span className="hidden group-hover:inline">✦ 抬首相望</span>
                         </span>
                       </>
                     ) : (
-                      <span className="text-4xl font-brush text-ink-thick group-hover:text-cinnabar transition">
+                      <span className="text-5xl sm:text-6xl font-brush text-ink-thick group-hover:text-cinnabar transition">
                         {author.name.slice(-1)}
                       </span>
                     )}
                   </div>
 
                   {/* 名讳与字号 */}
-                  <h3 className="text-xl font-bold font-song tracking-widest text-ink-burnt group-hover:text-cinnabar transition">
+                  <h3 className="text-2xl font-bold font-song tracking-widest text-ink-burnt group-hover:text-cinnabar transition mt-1">
                     {author.name}
                   </h3>
-                  <p className="text-[11px] font-archaic text-cinnabar mt-0.5">
+                  <p className="text-xs font-archaic text-cinnabar mt-0.5">
                     {author.courtesyName ? `字${author.courtesyName}` : ''} {author.artName ? `· 号${author.artName}` : ''}
                   </p>
-                  <p className="text-xs font-song text-ink-light mt-2 leading-relaxed line-clamp-2 px-1">
+                  <p className="text-xs font-song text-ink-light mt-2.5 leading-relaxed line-clamp-2 px-2">
                     {author.biographySummary}
                   </p>
                 </div>
 
-                {/* 下半部：启封按钮 (安全居于底部宝相花上方) */}
-                <div className="mt-4 mb-1 px-4 py-1.5 rounded-full border border-cinnabar/60 group-hover:bg-cinnabar group-hover:text-paper-raw text-xs font-brush text-cinnabar transition-all flex items-center gap-1.5 shadow-xs">
+                {/* 下半部：启封按钮 */}
+                <div className="mt-5 mb-1 px-4 py-1.5 rounded-full border border-cinnabar/60 group-hover:bg-cinnabar group-hover:text-paper-raw text-xs font-brush text-cinnabar transition-all flex items-center gap-1.5 shadow-xs">
                   <span>启封生命短剧</span>
                   <span className="text-xs">➔</span>
                 </div>
