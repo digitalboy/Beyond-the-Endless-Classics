@@ -31,7 +31,13 @@ export default function HomePage() {
   };
 
   return (
-    <main className="min-h-screen flex flex-col relative overflow-x-hidden">
+    <main className="min-h-screen flex flex-col relative overflow-x-hidden bg-paper-warm">
+      {/* 首页全景宋代水墨山水背景 (古松、绝壁、远山、孤舟经卷) */}
+      <div
+        className="fixed inset-0 pointer-events-none z-0 bg-cover bg-bottom sm:bg-center bg-no-repeat opacity-25 mix-blend-multiply"
+        style={{ backgroundImage: "url('/assets/home_ink_landscape_bg.png')" }}
+      />
+
       {/* 全屏水墨浓墨破空转场层 */}
       {isExploding && (
         <div className="fixed inset-0 z-50 pointer-events-none flex items-center justify-center bg-black/40 backdrop-blur-md ink-transition-active">

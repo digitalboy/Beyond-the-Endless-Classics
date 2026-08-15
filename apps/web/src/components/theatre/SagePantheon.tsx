@@ -54,7 +54,7 @@ export const SagePantheon: React.FC<SagePantheonProps> = ({ onSelectSage }) => {
               <div
                 key={author.id}
                 onClick={() => onSelectSage(author.id)}
-                className="group cursor-pointer bg-paper-raw hover:bg-[#fffdf9] p-6 rounded-2xl border-2 border-paper-wash/80 hover:border-cinnabar transition-all duration-500 shadow-sheet hover:-translate-y-2 flex flex-col items-center text-center relative overflow-hidden"
+                className="group cursor-pointer bg-paper-raw/90 backdrop-blur-xs hover:bg-[#fffdf9] p-6 rounded-2xl border-2 border-paper-wash/80 hover:border-cinnabar transition-all duration-500 shadow-sheet hover:-translate-y-2 flex flex-col items-center text-center relative overflow-hidden"
               >
                 <div className="absolute top-4 right-4 seal-solid px-2 py-0.5 text-[10px] font-brush z-30 shadow-xs">
                   {author.dynasty}
