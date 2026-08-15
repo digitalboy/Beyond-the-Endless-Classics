@@ -55,14 +55,15 @@ export const SagePantheon: React.FC<SagePantheonProps> = ({ onSelectSage }) => {
               <TraditionalCard
                 key={author.id}
                 onClick={() => onSelectSage(author.id)}
-                className="items-center text-center pt-8 pb-6 px-6"
+                className="w-full"
+                contentClassName="items-center text-center pt-9 pb-8 px-5"
               >
-                <div className="absolute top-4 right-4 seal-solid px-2 py-0.5 text-[10px] font-brush z-30 shadow-xs">
+                <div className="absolute top-6 right-5 seal-solid px-2 py-0.5 text-[10px] font-brush z-30 shadow-xs">
                   {author.dynasty}
                 </div>
 
                 {/* 水墨肖像容器 (苏轼为双态淡入淡出，其他先贤为水墨印章) */}
-                <div className="w-36 h-36 rounded-full border-2 border-paper-wash group-hover:border-cinnabar overflow-hidden mb-5 transition-all duration-700 group-hover:scale-105 shadow-inner bg-paper-cooked relative flex items-center justify-center">
+                <div className="w-32 h-32 rounded-full border-2 border-paper-wash group-hover:border-cinnabar overflow-hidden mb-4 transition-all duration-700 group-hover:scale-105 shadow-inner bg-paper-cooked relative flex items-center justify-center">
                   {isSuShi ? (
                     <>
                       {/* 图 1 (默认态)：低头看书 */}
@@ -96,11 +97,11 @@ export const SagePantheon: React.FC<SagePantheonProps> = ({ onSelectSage }) => {
                 <p className="text-xs font-archaic text-cinnabar mt-1">
                   {author.courtesyName ? `字${author.courtesyName}` : ''} {author.artName ? `· 号${author.artName}` : ''}
                 </p>
-                <p className="text-xs font-song text-ink-light mt-3 leading-relaxed line-clamp-2">
+                <p className="text-xs font-song text-ink-light mt-2.5 leading-relaxed line-clamp-2 px-1">
                   {author.biographySummary}
                 </p>
 
-                <div className="mt-6 px-4 py-1.5 rounded-full border border-cinnabar/60 group-hover:bg-cinnabar group-hover:text-paper-raw text-xs font-brush text-cinnabar transition-all flex items-center gap-1.5 shadow-xs">
+                <div className="mt-5 px-4 py-1.5 rounded-full border border-cinnabar/60 group-hover:bg-cinnabar group-hover:text-paper-raw text-xs font-brush text-cinnabar transition-all flex items-center gap-1.5 shadow-xs">
                   <span>启封生命短剧</span>
                   <span className="text-xs">➔</span>
                 </div>

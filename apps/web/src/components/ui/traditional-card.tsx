@@ -1,121 +1,242 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { cn } from '@/lib/utils';
 
 export interface TraditionalCardProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
-  variant?: 'sage' | 'destiny' | 'manuscript' | 'scroll';
+  variant?: 'gate' | 'ruyi' | 'manuscript' | 'simple';
+  goldColor?: string;
+  bgColor?: string;
   hoverEffect?: boolean;
   className?: string;
+  contentClassName?: string;
+  showOrnaments?: boolean;
 }
 
-/** 四角如意卷云纹 SVG 装饰 */
-export const RuyiCorner: React.FC<{ position: 'tl' | 'tr' | 'bl' | 'br'; className?: string }> = ({
-  position,
-  className,
-}) => {
-  const rotationMap = {
-    tl: '',
-    tr: 'scale-x-[-1]',
-    bl: 'scale-y-[-1]',
-    br: 'scale-x-[-1] scale-y-[-1]',
-  };
-
-  const positionMap = {
-    tl: 'top-1.5 left-1.5',
-    tr: 'top-1.5 right-1.5',
-    bl: 'bottom-1.5 left-1.5',
-    br: 'bottom-1.5 right-1.5',
-  };
-
-  return (
-    <div className={cn('absolute pointer-events-none w-7 h-7 text-paper-wash transition-colors duration-500 group-hover:text-cinnabar/80', positionMap[position], rotationMap[position], className)}>
-      <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="1.2" className="w-full h-full">
-        {/* 外角直角折角 */}
-        <path d="M2,18 L2,2 L18,2" strokeWidth="1.2" />
-        {/* 内层如意回勾 */}
-        <path d="M5,14 L5,5 L14,5" strokeWidth="0.8" opacity="0.7" />
-        {/* 传统卷草云纹 */}
-        <path d="M7,7 C10,7 12,9 12,12 C12,15 9,16 7,14 C5,12 7,8 10,8" strokeWidth="0.9" />
-        <path d="M2,2 L6,6" strokeWidth="0.8" opacity="0.6" />
-        {/* 角落点缀圆珠 */}
-        <circle cx="15" cy="15" r="1" fill="currentColor" opacity="0.8" />
-      </svg>
-    </div>
-  );
-};
-
-/** 顶部/底部对称中式卷草纹徽饰 (Header/Footer Crest) */
-export const ChineseCrest: React.FC<{ className?: string; flipped?: boolean }> = ({
-  className,
-  flipped,
-}) => {
-  return (
-    <div
-      className={cn(
-        'w-36 h-4 mx-auto text-paper-wash/80 pointer-events-none transition-colors duration-500 group-hover:text-cinnabar/60',
-        flipped && 'rotate-180',
-        className
-      )}
-    >
-      <svg viewBox="0 0 120 16" fill="none" stroke="currentColor" strokeWidth="1" className="w-full h-full">
-        {/* 中央菱形吉祥扣 */}
-        <polygon points="60,2 64,8 60,14 56,8" fill="currentColor" fillOpacity="0.3" strokeWidth="0.8" />
-        <circle cx="60" cy="8" r="1.5" fill="currentColor" />
-        {/* 左侧卷草蔓延 */}
-        <path d="M54,8 C46,4 40,12 30,7 C24,3 18,8 10,8 L2,8" strokeWidth="0.9" />
-        <path d="M48,8 C44,11 38,10 34,6" strokeWidth="0.7" opacity="0.7" />
-        {/* 右侧卷草蔓延 */}
-        <path d="M66,8 C74,4 80,12 90,7 C96,3 102,8 110,8 L118,8" strokeWidth="0.9" />
-        <path d="M72,8 C76,11 82,10 86,6" strokeWidth="0.7" opacity="0.7" />
-      </svg>
-    </div>
-  );
-};
-
 /**
- * 东方传统纹饰自适应卡片组件
- * 适用于不同尺寸 (头像卡片、手札、剧场、研读段落)
+ * 经典古典门券叠涩（Pointed Ogee Arch with Stepped Shoulders）与宝相花纹饰卡片
+ * 基于 ResizeObserver 实时计算矢量路径，严丝合缝自适应任意卡片尺寸
  */
 export const TraditionalCard: React.FC<TraditionalCardProps> = ({
   children,
-  variant = 'sage',
+  variant = 'gate',
+  goldColor = 'var(--color-paper-wash, #b89255)',
+  bgColor = 'var(--color-paper-raw, #faf6ee)',
   hoverEffect = true,
   className,
+  contentClassName,
+  showOrnaments = true,
   ...props
 }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [dimensions, setDimensions] = useState<{ width: number; height: number }>({ width: 0, height: 0 });
+
+  useEffect(() => {
+    if (!containerRef.current) return;
+    const observer = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        const { width, height } = entry.contentRect;
+        if (width > 0 && height > 0) {
+          setDimensions({ width, height });
+        }
+      }
+    });
+
+    observer.observe(containerRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  const { width: w, height: h } = dimensions;
+
+  // 门券叠涩几何参数计算
+  const edgeMargin = 14;
+  const stepH = 18;
+  const stepV = 14;
+  const topPeakY = 10;
+  const shoulderY = 42;
+  const notchY = shoulderY - stepV;
+  const notchX = edgeMargin + stepH;
+  const gap = 6;
+
+  // 1. 外层尖券叠涩拱形轮廓 (Outer Path)
+  const outerPath = w > 0 && h > 0 ? `
+    M ${edgeMargin}, ${shoulderY}
+    L ${notchX}, ${shoulderY}
+    L ${notchX}, ${notchY}
+    C ${notchX + (w / 2 - notchX) * 0.4}, ${notchY - 2}, ${w / 2 - 28}, ${topPeakY + 8}, ${w / 2}, ${topPeakY}
+    C ${w / 2 + 28}, ${topPeakY + 8}, ${w - notchX - (w / 2 - notchX) * 0.4}, ${notchY - 2}, ${w - notchX}, ${notchY}
+    L ${w - notchX}, ${shoulderY}
+    L ${w - edgeMargin}, ${shoulderY}
+    L ${w - edgeMargin}, ${h - shoulderY}
+    L ${w - notchX}, ${h - shoulderY}
+    L ${w - notchX}, ${h - notchY}
+    C ${w - notchX - (w / 2 - notchX) * 0.4}, ${h - notchY + 2}, ${w / 2 + 28}, ${h - topPeakY - 8}, ${w / 2}, ${h - topPeakY}
+    C ${w / 2 - 28}, ${h - topPeakY - 8}, ${notchX + (w / 2 - notchX) * 0.4}, ${h - notchY + 2}, ${notchX}, ${h - notchY}
+    L ${notchX}, ${h - shoulderY}
+    L ${edgeMargin}, ${h - shoulderY}
+    Z
+  ` : '';
+
+  // 2. 内层平行双轨线 (Inner Path)
+  const inMargin = edgeMargin + gap;
+  const inShoulderY = shoulderY - gap * 0.5;
+  const inNotchX = notchX + gap;
+  const inNotchY = notchY + gap;
+  const inTopPeakY = topPeakY + gap;
+
+  const innerPath = w > 0 && h > 0 ? `
+    M ${inMargin}, ${inShoulderY}
+    L ${inNotchX}, ${inShoulderY}
+    L ${inNotchX}, ${inNotchY}
+    C ${inNotchX + (w / 2 - inNotchX) * 0.4}, ${inNotchY - 2}, ${w / 2 - 24}, ${inTopPeakY + 8}, ${w / 2}, ${inTopPeakY}
+    C ${w / 2 + 24}, ${inTopPeakY + 8}, ${w - inNotchX - (w / 2 - inNotchX) * 0.4}, ${inNotchY - 2}, ${w - inNotchX}, ${inNotchY}
+    L ${w - inNotchX}, ${inShoulderY}
+    L ${w - inMargin}, ${inShoulderY}
+    L ${w - inMargin}, ${h - inShoulderY}
+    L ${w - inNotchX}, ${h - inShoulderY}
+    L ${w - inNotchX}, ${h - inNotchY}
+    C ${w - inNotchX - (w / 2 - inNotchX) * 0.4}, ${h - inNotchY + 2}, ${w / 2 + 24}, ${h - inTopPeakY - 8}, ${w / 2}, ${h - topPeakY - gap}
+    C ${w / 2 - 24}, ${h - inTopPeakY - 8}, ${inNotchX + (w / 2 - inNotchX) * 0.4}, ${h - inNotchY + 2}, ${inNotchX}, ${h - inNotchY}
+    L ${inNotchX}, ${h - inShoulderY}
+    L ${inMargin}, ${h - inShoulderY}
+    Z
+  ` : '';
+
   return (
     <div
+      ref={containerRef}
       className={cn(
-        'group relative bg-paper-raw/95 backdrop-blur-xs rounded-2xl border-2 border-paper-wash/80 text-ink-burnt p-6 shadow-sheet transition-all duration-500 overflow-hidden flex flex-col',
-        hoverEffect && 'hover:bg-[#fffdf9] hover:border-cinnabar hover:-translate-y-1.5 hover:shadow-theatre cursor-pointer',
-        variant === 'sage' && 'border-2',
-        variant === 'manuscript' && 'p-7 rounded-3xl bg-[#fbf6ed]',
-        variant === 'destiny' && 'bg-paper-cooked/90 p-8 rounded-3xl border-2',
+        'group relative select-none transition-all duration-500 flex flex-col',
+        hoverEffect && 'hover:-translate-y-1.5 cursor-pointer',
         className
       )}
+      style={{
+        filter: hoverEffect
+          ? 'drop-shadow(0 10px 24px rgba(184, 146, 85, 0.12))'
+          : 'drop-shadow(0 4px 12px rgba(184, 146, 85, 0.08))',
+      }}
       {...props}
     >
-      {/* 1. 四角如意古纹 */}
-      <RuyiCorner position="tl" />
-      <RuyiCorner position="tr" />
-      <RuyiCorner position="bl" />
-      <RuyiCorner position="br" />
+      {/* 动态计算渲染的 SVG 纹饰与边框背景层 */}
+      {w > 0 && h > 0 && (
+        <svg
+          className="absolute inset-0 w-full h-full pointer-events-none z-1 overflow-visible"
+          viewBox={`0 0 ${w} ${h}`}
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          {/* 主外层门券轮廓与宣纸填充 */}
+          <path
+            d={outerPath}
+            stroke="currentColor"
+            className="text-paper-wash transition-colors duration-500 group-hover:text-cinnabar"
+            strokeWidth="1.8"
+            fill={bgColor}
+            strokeLinejoin="round"
+            strokeLinecap="round"
+          />
 
-      {/* 2. 内层双轨细线朱丝栏框 (具有古籍经折装内框质感) */}
-      <div className="absolute inset-2.5 rounded-xl border border-dashed border-paper-wash/60 pointer-events-none transition-colors duration-500 group-hover:border-cinnabar/30" />
+          {/* 内层平行等距朱丝细线 */}
+          <path
+            d={innerPath}
+            stroke="currentColor"
+            className="text-paper-wash/80 transition-colors duration-500 group-hover:text-cinnabar/60"
+            strokeWidth="1.2"
+            fill="none"
+            strokeLinejoin="round"
+            strokeLinecap="round"
+          />
 
-      {/* 3. 顶部微饰 */}
-      <ChineseCrest className="absolute top-1.5 left-1/2 -translate-x-1/2 opacity-70" />
+          {/* 顶部中式宝相花与对称卷草纹 */}
+          {showOrnaments && (
+            <g
+              transform={`translate(${w / 2}, ${inTopPeakY + 22})`}
+              className="text-paper-wash transition-colors duration-500 group-hover:text-cinnabar"
+            >
+              {/* 中央宝相莲蕾 */}
+              <path d="M 0,-12 C -2.5,-8 -3.5,-2 0,1 C 3.5,-2 2.5,-8 0,-12 Z" fill="currentColor" />
+              <path
+                d="M -2.5,-4 C -6,-6.5 -8.5,-3 -7,0 C -5,2.5 -1.5,1 0,1 C 1.5,1 5,2.5 7,0 C 8.5,-3 6,-6.5 2.5,-4"
+                fill="currentColor"
+                opacity="0.9"
+              />
 
-      {/* 4. 卡片核心内容 */}
-      <div className="relative z-10 w-full flex-1 flex flex-col">
+              {/* 左侧 S 型古典卷草 */}
+              <path
+                d="M -2, 1 C -10, 1 -17,-6 -24,-2.5 C -29, 0 -25, 6 -19, 3.5 C -14, 1.8 -15.5,-1.8 -21,-1"
+                stroke="currentColor"
+                strokeWidth="1.4"
+                fill="none"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path d="M -13,-3.5 C -17,-8.5 -22,-7 -20,-3.5" stroke="currentColor" strokeWidth="1.2" fill="none" strokeLinecap="round" />
+              <circle cx="-24" cy="-2.5" r="1.3" fill="currentColor" />
+
+              {/* 右侧 S 型古典卷草 */}
+              <path
+                d="M 2, 1 C 10, 1 17,-6 24,-2.5 C 29, 0 25, 6 19, 3.5 C 14, 1.8 15.5,-1.8 21,-1"
+                stroke="currentColor"
+                strokeWidth="1.4"
+                fill="none"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path d="M 13,-3.5 C 17,-8.5 22,-7 20,-3.5" stroke="currentColor" strokeWidth="1.2" fill="none" strokeLinecap="round" />
+              <circle cx="24" cy="-2.5" r="1.3" fill="currentColor" />
+            </g>
+          )}
+
+          {/* 底部中式宝相花对称镜像 */}
+          {showOrnaments && (
+            <g
+              transform={`translate(${w / 2}, ${h - inTopPeakY - 22}) scale(1, -1)`}
+              className="text-paper-wash transition-colors duration-500 group-hover:text-cinnabar"
+            >
+              {/* 中央宝相莲蕾 */}
+              <path d="M 0,-12 C -2.5,-8 -3.5,-2 0,1 C 3.5,-2 2.5,-8 0,-12 Z" fill="currentColor" />
+              <path
+                d="M -2.5,-4 C -6,-6.5 -8.5,-3 -7,0 C -5,2.5 -1.5,1 0,1 C 1.5,1 5,2.5 7,0 C 8.5,-3 6,-6.5 2.5,-4"
+                fill="currentColor"
+                opacity="0.9"
+              />
+
+              {/* 左侧 S 型古典卷草 */}
+              <path
+                d="M -2, 1 C -10, 1 -17,-6 -24,-2.5 C -29, 0 -25, 6 -19, 3.5 C -14, 1.8 -15.5,-1.8 -21,-1"
+                stroke="currentColor"
+                strokeWidth="1.4"
+                fill="none"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <circle cx="-24" cy="-2.5" r="1.3" fill="currentColor" />
+
+              {/* 右侧 S 型古典卷草 */}
+              <path
+                d="M 2, 1 C 10, 1 17,-6 24,-2.5 C 29, 0 25, 6 19, 3.5 C 14, 1.8 15.5,-1.8 21,-1"
+                stroke="currentColor"
+                strokeWidth="1.4"
+                fill="none"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <circle cx="24" cy="-2.5" r="1.3" fill="currentColor" />
+            </g>
+          )}
+        </svg>
+      )}
+
+      {/* 卡片内部内容插槽 (预留顶底宝相花避让区域) */}
+      <div
+        className={cn(
+          'relative z-10 w-full flex-1 flex flex-col',
+          showOrnaments ? 'pt-10 pb-9 px-6' : 'p-6',
+          contentClassName
+        )}
+      >
         {children}
       </div>
-
-      {/* 5. 底部微饰 */}
-      <ChineseCrest className="absolute bottom-1.5 left-1/2 -translate-x-1/2 opacity-70" flipped />
     </div>
   );
 };
