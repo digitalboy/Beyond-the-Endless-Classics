@@ -5,6 +5,55 @@ import type { Author } from '@beyond-classics/types';
 import { fetchAuthorsFromCloud } from '@/lib/api-client';
 import { TraditionalCard } from '@/components/ui/traditional-card';
 
+// ─────────────────────────────────────────────────────────────
+// 回纹 (Chinese meander / key pattern) 圆形装饰边框
+// NOTE: 模块级预计算 SVG path，避免每次渲染重复运算。
+// 原理：在外环半径 oR 与内环半径 iR 之间生成锯齿状环形路径，
+// 填充后呈现出传统 回纹 纹饰效果，用于装饰先贤肖像外框。
+// ─────────────────────────────────────────────────────────────
+const MEANDER_SVG_SIZE = 176;
+const MEANDER_CENTER = MEANDER_SVG_SIZE / 2; // 88
+const MEANDER_OUTER_R = 84;
+const MEANDER_INNER_R = 73;
+const MEANDER_TEETH = 24;
+
+function computeMeanderRingPath(): string {
+  const cx = MEANDER_CENTER;
+  const cy = MEANDER_CENTER;
+  const oR = MEANDER_OUTER_R;
+  const iR = MEANDER_INNER_R;
+  const n = MEANDER_TEETH;
+  let d = '';
+
+  for (let i = 0; i < n; i++) {
+    const a1 = (2 * Math.PI / n) * i - Math.PI / 2;
+    const aMid = (2 * Math.PI / n) * (i + 0.5) - Math.PI / 2;
+    const a2 = (2 * Math.PI / n) * (i + 1) - Math.PI / 2;
+
+    const ox1 = cx + oR * Math.cos(a1);
+    const oy1 = cy + oR * Math.sin(a1);
+    const oxM = cx + oR * Math.cos(aMid);
+    const oyM = cy + oR * Math.sin(aMid);
+    const ixM = cx + iR * Math.cos(aMid);
+    const iyM = cy + iR * Math.sin(aMid);
+    const ix2 = cx + iR * Math.cos(a2);
+    const iy2 = cy + iR * Math.sin(a2);
+    const ox2 = cx + oR * Math.cos(a2);
+    const oy2 = cy + oR * Math.sin(a2);
+
+    if (i === 0) d += `M ${ox1.toFixed(1)},${oy1.toFixed(1)} `;
+    d += `A ${oR},${oR} 0 0,1 ${oxM.toFixed(1)},${oyM.toFixed(1)} `;
+    d += `L ${ixM.toFixed(1)},${iyM.toFixed(1)} `;
+    d += `A ${iR},${iR} 0 0,1 ${ix2.toFixed(1)},${iy2.toFixed(1)} `;
+    d += `L ${ox2.toFixed(1)},${oy2.toFixed(1)} `;
+  }
+
+  d += 'Z';
+  return d;
+}
+
+const MEANDER_RING_PATH = computeMeanderRingPath();
+
 interface SagePantheonProps {
   onSelectSage: (sageId: string) => void;
 }
@@ -55,7 +104,7 @@ export const SagePantheon: React.FC<SagePantheonProps> = ({ onSelectSage }) => {
               <TraditionalCard
                 key={author.id}
                 onClick={() => onSelectSage(author.id)}
-                className="w-full min-h-[450px]"
+                className="w-full min-h-[520px]"
                 contentClassName="items-center text-center justify-between"
               >
                 {/* 上半部：朝代题签与水墨肖像 */}
@@ -67,33 +116,50 @@ export const SagePantheon: React.FC<SagePantheonProps> = ({ onSelectSage }) => {
                     </span>
                   </div>
 
-                  {/* 水墨肖像容器 (放大至 w-36 h-36，细节更震撼清晰) */}
-                  <div className="w-36 h-36 rounded-full border-2 border-paper-wash group-hover:border-cinnabar overflow-hidden mb-3.5 transition-all duration-700 group-hover:scale-105 shadow-md bg-paper-cooked relative flex items-center justify-center">
-                    {isSuShi ? (
-                      <>
-                        {/* 图 1 (默认态)：低头看书 */}
-                        <img
-                          src="/assets/su_shi_reading.jpg"
-                          alt="苏轼展卷沉读"
-                          className="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-700 ease-in-out opacity-100 group-hover:opacity-0"
-                        />
-                        {/* 图 2 (悬浮态)：抬头望向读者 */}
-                        <img
-                          src="/assets/su_shi_looking.jpg"
-                          alt="苏轼抬头注视"
-                          className="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-700 ease-in-out opacity-0 group-hover:opacity-100"
-                        />
-                        <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent pointer-events-none z-20" />
-                        <span className="absolute bottom-1.5 z-20 text-[10px] font-archaic text-paper-raw tracking-widest transition-all duration-500 group-hover:text-amber-200">
-                          <span className="group-hover:hidden">✦ 沉吟展读</span>
-                          <span className="hidden group-hover:inline">✦ 抬首相望</span>
+                  {/* 水墨肖像 + 回纹圆形装饰边框 */}
+                  <div className="relative w-44 h-44 flex items-center justify-center mb-3 transition-transform duration-700 group-hover:scale-105">
+                    {/* 回纹 (meander) 装饰环 SVG */}
+                    <svg
+                      viewBox={`0 0 ${MEANDER_SVG_SIZE} ${MEANDER_SVG_SIZE}`}
+                      className="absolute inset-0 w-full h-full text-cinnabar/30 group-hover:text-cinnabar/70 transition-colors duration-700"
+                      aria-hidden="true"
+                    >
+                      {/* 外圈纤细点睛线 */}
+                      <circle cx={MEANDER_CENTER} cy={MEANDER_CENTER} r={MEANDER_OUTER_R + 2} fill="none" stroke="currentColor" strokeWidth="0.7" />
+                      {/* 回纹齿形环带 (核心纹饰) */}
+                      <path d={MEANDER_RING_PATH} fill="currentColor" />
+                      {/* 内圈纤细点睛线 */}
+                      <circle cx={MEANDER_CENTER} cy={MEANDER_CENTER} r={MEANDER_INNER_R - 1} fill="none" stroke="currentColor" strokeWidth="0.7" />
+                    </svg>
+
+                    {/* 人物肖像圆形容器 (居中于回纹环内) */}
+                    <div className="w-36 h-36 rounded-full border border-paper-wash/30 overflow-hidden bg-paper-cooked relative flex items-center justify-center z-10 shadow-inner">
+                      {isSuShi ? (
+                        <>
+                          {/* 图 1 (默认态)：低头看书 */}
+                          <img
+                            src="/assets/su_shi_reading.jpg"
+                            alt="苏轼展卷沉读"
+                            className="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-700 ease-in-out opacity-100 group-hover:opacity-0"
+                          />
+                          {/* 图 2 (悬浮态)：抬头望向读者 */}
+                          <img
+                            src="/assets/su_shi_looking.jpg"
+                            alt="苏轼抬头注视"
+                            className="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-700 ease-in-out opacity-0 group-hover:opacity-100"
+                          />
+                          <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent pointer-events-none z-20" />
+                          <span className="absolute bottom-1.5 z-20 text-[10px] font-archaic text-paper-raw tracking-widest transition-all duration-500 group-hover:text-amber-200">
+                            <span className="group-hover:hidden">✦ 沉吟展读</span>
+                            <span className="hidden group-hover:inline">✦ 抬首相望</span>
+                          </span>
+                        </>
+                      ) : (
+                        <span className="text-5xl sm:text-6xl font-brush text-ink-thick group-hover:text-cinnabar transition">
+                          {author.name.slice(-1)}
                         </span>
-                      </>
-                    ) : (
-                      <span className="text-5xl sm:text-6xl font-brush text-ink-thick group-hover:text-cinnabar transition">
-                        {author.name.slice(-1)}
-                      </span>
-                    )}
+                      )}
+                    </div>
                   </div>
 
                   {/* 名讳与字号 */}
