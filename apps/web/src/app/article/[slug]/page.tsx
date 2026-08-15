@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { fetchArticleDetailFromCloud } from '@/lib/api-client';
+import { TraditionalCard } from '@/components/ui/traditional-card';
 
 interface ArticlePageProps {
   params: Promise<{
@@ -58,7 +59,7 @@ export default async function ArticleScrollPage({ params }: ArticlePageProps) {
 
       {/* 心理危机与创作背景导言 (泛黄熟宣折页) */}
       <section className="max-w-5xl mx-auto w-full px-8 pt-8 pb-4">
-        <div className="p-6 rounded-2xl bg-paper-raw border-2 border-paper-wash shadow-sheet space-y-3">
+        <TraditionalCard hoverEffect={false} className="p-7 space-y-3">
           <div className="flex items-center gap-2 text-xs font-archaic text-cinnabar font-bold">
             <span className="inline-block w-2.5 h-2.5 rounded-full bg-cinnabar" />
             <span>【命途处境与精神突围】</span>
@@ -69,16 +70,17 @@ export default async function ArticleScrollPage({ params }: ArticlePageProps) {
           <div className="pt-2 border-t border-paper-wash/60 text-xs font-archaic text-ink-light">
             <span className="text-cinnabar font-bold">核心心理机制：</span>{article.psychologicalBackground}
           </div>
-        </div>
+        </TraditionalCard>
       </section>
 
       {/* 竖排长卷自右向左阅读区域 */}
       <section className="flex-1 max-w-5xl mx-auto w-full px-8 py-6 space-y-8">
         {article.sections && article.sections.length > 0 ? (
           article.sections.map((sec) => (
-            <article
+            <TraditionalCard
               key={sec.id}
-              className="p-8 rounded-3xl bg-paper-raw text-ink-burnt border-2 border-paper-wash shadow-sheet space-y-6 relative overflow-hidden"
+              hoverEffect={false}
+              className="p-8 space-y-6"
             >
               <div className="flex items-center justify-between border-b border-paper-wash/80 pb-3">
                 <span className="text-xs font-archaic text-cinnabar font-bold">
@@ -115,7 +117,7 @@ export default async function ArticleScrollPage({ params }: ArticlePageProps) {
                   <span>{sec.subtext}</span>
                 </div>
               )}
-            </article>
+            </TraditionalCard>
           ))
         ) : (
           <div className="p-12 text-center text-ink-light font-archaic">暂无段落数据</div>

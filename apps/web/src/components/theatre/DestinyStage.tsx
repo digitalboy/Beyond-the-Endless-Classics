@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import type { Article } from '@beyond-classics/types';
 import { fetchArticlesFromCloud } from '@/lib/api-client';
+import { TraditionalCard } from '@/components/ui/traditional-card';
 
 interface DestinyStageProps {
   sageId: string;
@@ -431,10 +432,11 @@ export const DestinyStage: React.FC<DestinyStageProps> = ({
             </div>
           ) : (
             cloudArticles.map((art) => (
-              <div
+              <TraditionalCard
                 key={art.id}
+                variant="manuscript"
                 onClick={() => onSelectArticle(art.id)}
-                className="group cursor-pointer bg-paper-raw hover:bg-[#fffdf9] text-ink-burnt p-7 rounded-2xl border-2 border-paper-wash hover:border-cinnabar shadow-sheet hover:-translate-y-2 transition-all duration-500 relative flex flex-col justify-between overflow-hidden"
+                className="justify-between"
               >
                 <div>
                   <div className="flex items-center justify-between border-b border-paper-wash/80 pb-3 mb-3">
@@ -461,7 +463,7 @@ export const DestinyStage: React.FC<DestinyStageProps> = ({
                     展卷入戏 ➔
                   </span>
                 </div>
-              </div>
+              </TraditionalCard>
             ))
           )}
         </div>

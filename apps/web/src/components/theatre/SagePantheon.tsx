@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import type { Author } from '@beyond-classics/types';
 import { fetchAuthorsFromCloud } from '@/lib/api-client';
+import { TraditionalCard } from '@/components/ui/traditional-card';
 
 interface SagePantheonProps {
   onSelectSage: (sageId: string) => void;
@@ -40,7 +41,7 @@ export const SagePantheon: React.FC<SagePantheonProps> = ({ onSelectSage }) => {
         </p>
       </div>
 
-      {/* 先贤卡片阵列 */}
+      {/* 先贤卡片阵列 (采用中式如意卷云纹饰卡片) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl w-full relative z-10">
         {loading && cloudAuthors.length === 0 ? (
           <div className="col-span-full py-16 text-center text-ink-light font-archaic text-sm animate-pulse">
@@ -51,10 +52,10 @@ export const SagePantheon: React.FC<SagePantheonProps> = ({ onSelectSage }) => {
           cloudAuthors.map((author) => {
             const isSuShi = author.id === 'su-shi';
             return (
-              <div
+              <TraditionalCard
                 key={author.id}
                 onClick={() => onSelectSage(author.id)}
-                className="group cursor-pointer bg-paper-raw/90 backdrop-blur-xs hover:bg-[#fffdf9] p-6 rounded-2xl border-2 border-paper-wash/80 hover:border-cinnabar transition-all duration-500 shadow-sheet hover:-translate-y-2 flex flex-col items-center text-center relative overflow-hidden"
+                className="items-center text-center pt-8 pb-6 px-6"
               >
                 <div className="absolute top-4 right-4 seal-solid px-2 py-0.5 text-[10px] font-brush z-30 shadow-xs">
                   {author.dynasty}
@@ -103,7 +104,7 @@ export const SagePantheon: React.FC<SagePantheonProps> = ({ onSelectSage }) => {
                   <span>启封生命短剧</span>
                   <span className="text-xs">➔</span>
                 </div>
-              </div>
+              </TraditionalCard>
             );
           })
         )}
