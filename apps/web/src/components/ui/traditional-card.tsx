@@ -49,30 +49,30 @@ export const TraditionalCard: React.FC<TraditionalCardProps> = ({
 
   const { width: w, height: h } = dimensions;
 
-  // 门券叠涩几何参数计算
-  const edgeMargin = 14;
-  const stepH = 18;
-  const stepV = 14;
-  const topPeakY = 10;
-  const shoulderY = 42;
+  // 门券叠涩几何参数精细化调优 (贴合边缘，消除无效外侧留白)
+  const edgeMargin = 3;        // 外框贴边
+  const stepH = 16;            // 横向台阶折角
+  const stepV = 12;            // 纵向台阶折角
+  const topPeakY = 3;          // 顶部尖券微拱
+  const shoulderY = 32;        // 侧边与上肩连接点
   const notchY = shoulderY - stepV;
   const notchX = edgeMargin + stepH;
-  const gap = 6;
+  const gap = 5;               // 双轨线间隙
 
   // 1. 外层尖券叠涩拱形轮廓 (Outer Path)
   const outerPath = w > 0 && h > 0 ? `
     M ${edgeMargin}, ${shoulderY}
     L ${notchX}, ${shoulderY}
     L ${notchX}, ${notchY}
-    C ${notchX + (w / 2 - notchX) * 0.4}, ${notchY - 2}, ${w / 2 - 28}, ${topPeakY + 8}, ${w / 2}, ${topPeakY}
-    C ${w / 2 + 28}, ${topPeakY + 8}, ${w - notchX - (w / 2 - notchX) * 0.4}, ${notchY - 2}, ${w - notchX}, ${notchY}
+    C ${notchX + (w / 2 - notchX) * 0.4}, ${notchY - 1}, ${w / 2 - 24}, ${topPeakY + 6}, ${w / 2}, ${topPeakY}
+    C ${w / 2 + 24}, ${topPeakY + 6}, ${w - notchX - (w / 2 - notchX) * 0.4}, ${notchY - 1}, ${w - notchX}, ${notchY}
     L ${w - notchX}, ${shoulderY}
     L ${w - edgeMargin}, ${shoulderY}
     L ${w - edgeMargin}, ${h - shoulderY}
     L ${w - notchX}, ${h - shoulderY}
     L ${w - notchX}, ${h - notchY}
-    C ${w - notchX - (w / 2 - notchX) * 0.4}, ${h - notchY + 2}, ${w / 2 + 28}, ${h - topPeakY - 8}, ${w / 2}, ${h - topPeakY}
-    C ${w / 2 - 28}, ${h - topPeakY - 8}, ${notchX + (w / 2 - notchX) * 0.4}, ${h - notchY + 2}, ${notchX}, ${h - notchY}
+    C ${w - notchX - (w / 2 - notchX) * 0.4}, ${h - notchY + 1}, ${w / 2 + 24}, ${h - topPeakY - 6}, ${w / 2}, ${h - topPeakY}
+    C ${w / 2 - 24}, ${h - topPeakY - 6}, ${notchX + (w / 2 - notchX) * 0.4}, ${h - notchY + 1}, ${notchX}, ${h - notchY}
     L ${notchX}, ${h - shoulderY}
     L ${edgeMargin}, ${h - shoulderY}
     Z
@@ -89,15 +89,15 @@ export const TraditionalCard: React.FC<TraditionalCardProps> = ({
     M ${inMargin}, ${inShoulderY}
     L ${inNotchX}, ${inShoulderY}
     L ${inNotchX}, ${inNotchY}
-    C ${inNotchX + (w / 2 - inNotchX) * 0.4}, ${inNotchY - 2}, ${w / 2 - 24}, ${inTopPeakY + 8}, ${w / 2}, ${inTopPeakY}
-    C ${w / 2 + 24}, ${inTopPeakY + 8}, ${w - inNotchX - (w / 2 - inNotchX) * 0.4}, ${inNotchY - 2}, ${w - inNotchX}, ${inNotchY}
+    C ${inNotchX + (w / 2 - inNotchX) * 0.4}, ${inNotchY - 1}, ${w / 2 - 20}, ${inTopPeakY + 5}, ${w / 2}, ${inTopPeakY}
+    C ${w / 2 + 20}, ${inTopPeakY + 5}, ${w - inNotchX - (w / 2 - inNotchX) * 0.4}, ${inNotchY - 1}, ${w - inNotchX}, ${inNotchY}
     L ${w - inNotchX}, ${inShoulderY}
     L ${w - inMargin}, ${inShoulderY}
     L ${w - inMargin}, ${h - inShoulderY}
     L ${w - inNotchX}, ${h - inShoulderY}
     L ${w - inNotchX}, ${h - inNotchY}
-    C ${w - inNotchX - (w / 2 - inNotchX) * 0.4}, ${h - inNotchY + 2}, ${w / 2 + 24}, ${h - inTopPeakY - 8}, ${w / 2}, ${h - topPeakY - gap}
-    C ${w / 2 - 24}, ${h - inTopPeakY - 8}, ${inNotchX + (w / 2 - inNotchX) * 0.4}, ${h - inNotchY + 2}, ${inNotchX}, ${h - inNotchY}
+    C ${w - inNotchX - (w / 2 - inNotchX) * 0.4}, ${h - inNotchY + 1}, ${w / 2 + 20}, ${h - inTopPeakY - 5}, ${w / 2}, ${h - inTopPeakY}
+    C ${w / 2 - 20}, ${h - inTopPeakY - 5}, ${inNotchX + (w / 2 - inNotchX) * 0.4}, ${h - inNotchY + 1}, ${inNotchX}, ${h - inNotchY}
     L ${inNotchX}, ${h - inShoulderY}
     L ${inMargin}, ${h - inShoulderY}
     Z
@@ -113,8 +113,8 @@ export const TraditionalCard: React.FC<TraditionalCardProps> = ({
       )}
       style={{
         filter: hoverEffect
-          ? 'drop-shadow(0 10px 24px rgba(184, 146, 85, 0.12))'
-          : 'drop-shadow(0 4px 12px rgba(184, 146, 85, 0.08))',
+          ? 'drop-shadow(0 8px 20px rgba(184, 146, 85, 0.16))'
+          : 'drop-shadow(0 2px 8px rgba(184, 146, 85, 0.08))',
       }}
       {...props}
     >
@@ -150,88 +150,86 @@ export const TraditionalCard: React.FC<TraditionalCardProps> = ({
           {/* 顶部中式宝相花与对称卷草纹 */}
           {showOrnaments && (
             <g
-              transform={`translate(${w / 2}, ${inTopPeakY + 22})`}
+              transform={`translate(${w / 2}, ${inTopPeakY + 14})`}
               className="text-paper-wash transition-colors duration-500 group-hover:text-cinnabar"
             >
               {/* 中央宝相莲蕾 */}
-              <path d="M 0,-12 C -2.5,-8 -3.5,-2 0,1 C 3.5,-2 2.5,-8 0,-12 Z" fill="currentColor" />
+              <path d="M 0,-10 C -2,-6.5 -3,-1.5 0,1 C 3,-1.5 2,-6.5 0,-10 Z" fill="currentColor" />
               <path
-                d="M -2.5,-4 C -6,-6.5 -8.5,-3 -7,0 C -5,2.5 -1.5,1 0,1 C 1.5,1 5,2.5 7,0 C 8.5,-3 6,-6.5 2.5,-4"
+                d="M -2,-3.5 C -5,-5.5 -7,-2.5 -6,0 C -4,2 -1,0.8 0,0.8 C 1,0.8 4,2 6,0 C 7,-2.5 5,-5.5 2,-3.5"
                 fill="currentColor"
                 opacity="0.9"
               />
 
               {/* 左侧 S 型古典卷草 */}
               <path
-                d="M -2, 1 C -10, 1 -17,-6 -24,-2.5 C -29, 0 -25, 6 -19, 3.5 C -14, 1.8 -15.5,-1.8 -21,-1"
+                d="M -2, 0.8 C -8, 0.8 -14,-5 -20,-2 C -24, 0 -21, 5 -16, 3 C -12, 1.5 -13,-1.5 -17.5,-0.8"
                 stroke="currentColor"
-                strokeWidth="1.4"
+                strokeWidth="1.3"
                 fill="none"
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
-              <path d="M -13,-3.5 C -17,-8.5 -22,-7 -20,-3.5" stroke="currentColor" strokeWidth="1.2" fill="none" strokeLinecap="round" />
-              <circle cx="-24" cy="-2.5" r="1.3" fill="currentColor" />
+              <circle cx="-20" cy="-2" r="1.1" fill="currentColor" />
 
               {/* 右侧 S 型古典卷草 */}
               <path
-                d="M 2, 1 C 10, 1 17,-6 24,-2.5 C 29, 0 25, 6 19, 3.5 C 14, 1.8 15.5,-1.8 21,-1"
+                d="M 2, 0.8 C 8, 0.8 14,-5 20,-2 C 24, 0 21, 5 16, 3 C 12, 1.5 13,-1.5 17.5,-0.8"
                 stroke="currentColor"
-                strokeWidth="1.4"
+                strokeWidth="1.3"
                 fill="none"
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
-              <path d="M 13,-3.5 C 17,-8.5 22,-7 20,-3.5" stroke="currentColor" strokeWidth="1.2" fill="none" strokeLinecap="round" />
-              <circle cx="24" cy="-2.5" r="1.3" fill="currentColor" />
+              <circle cx="20" cy="-2" r="1.1" fill="currentColor" />
             </g>
           )}
 
           {/* 底部中式宝相花对称镜像 */}
           {showOrnaments && (
             <g
-              transform={`translate(${w / 2}, ${h - inTopPeakY - 22}) scale(1, -1)`}
+              transform={`translate(${w / 2}, ${h - inTopPeakY - 14}) scale(1, -1)`}
               className="text-paper-wash transition-colors duration-500 group-hover:text-cinnabar"
             >
               {/* 中央宝相莲蕾 */}
-              <path d="M 0,-12 C -2.5,-8 -3.5,-2 0,1 C 3.5,-2 2.5,-8 0,-12 Z" fill="currentColor" />
+              <path d="M 0,-10 C -2,-6.5 -3,-1.5 0,1 C 3,-1.5 2,-6.5 0,-10 Z" fill="currentColor" />
               <path
-                d="M -2.5,-4 C -6,-6.5 -8.5,-3 -7,0 C -5,2.5 -1.5,1 0,1 C 1.5,1 5,2.5 7,0 C 8.5,-3 6,-6.5 2.5,-4"
+                d="M -2,-3.5 C -5,-5.5 -7,-2.5 -6,0 C -4,2 -1,0.8 0,0.8 C 1,0.8 4,2 6,0 C 7,-2.5 5,-5.5 2,-3.5"
                 fill="currentColor"
                 opacity="0.9"
               />
 
               {/* 左侧 S 型古典卷草 */}
               <path
-                d="M -2, 1 C -10, 1 -17,-6 -24,-2.5 C -29, 0 -25, 6 -19, 3.5 C -14, 1.8 -15.5,-1.8 -21,-1"
+                d="M -2, 0.8 C -8, 0.8 -14,-5 -20,-2 C -24, 0 -21, 5 -16, 3 C -12, 1.5 -13,-1.5 -17.5,-0.8"
                 stroke="currentColor"
-                strokeWidth="1.4"
+                strokeWidth="1.3"
                 fill="none"
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
-              <circle cx="-24" cy="-2.5" r="1.3" fill="currentColor" />
+              <circle cx="-20" cy="-2" r="1.1" fill="currentColor" />
 
               {/* 右侧 S 型古典卷草 */}
               <path
-                d="M 2, 1 C 10, 1 17,-6 24,-2.5 C 29, 0 25, 6 19, 3.5 C 14, 1.8 15.5,-1.8 21,-1"
+                d="M 2, 0.8 C 8, 0.8 14,-5 20,-2 C 24, 0 21, 5 16, 3 C 12, 1.5 13,-1.5 17.5,-0.8"
                 stroke="currentColor"
-                strokeWidth="1.4"
+                strokeWidth="1.3"
                 fill="none"
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
-              <circle cx="24" cy="-2.5" r="1.3" fill="currentColor" />
+              <circle cx="20" cy="-2" r="1.1" fill="currentColor" />
             </g>
           )}
         </svg>
       )}
 
-      {/* 卡片内部内容插槽 (预留顶底宝相花避让区域) */}
+      {/* 卡片内部内容插槽 */}
       <div
         className={cn(
           'relative z-10 w-full flex-1 flex flex-col',
-          showOrnaments ? 'pt-10 pb-9 px-6' : 'p-6',
+          showOrnaments ? 'pt-7 pb-6 px-4' : 'p-4',
           contentClassName
         )}
       >

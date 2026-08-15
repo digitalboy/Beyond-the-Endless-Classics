@@ -56,14 +56,14 @@ export const SagePantheon: React.FC<SagePantheonProps> = ({ onSelectSage }) => {
                 key={author.id}
                 onClick={() => onSelectSage(author.id)}
                 className="w-full"
-                contentClassName="items-center text-center pt-9 pb-8 px-5"
+                contentClassName="items-center text-center pt-6 pb-6 px-4"
               >
-                <div className="absolute top-6 right-5 seal-solid px-2 py-0.5 text-[10px] font-brush z-30 shadow-xs">
+                <div className="absolute top-3 right-3 seal-solid px-2 py-0.5 text-[10px] font-brush z-30 shadow-xs">
                   {author.dynasty}
                 </div>
 
                 {/* 水墨肖像容器 (苏轼为双态淡入淡出，其他先贤为水墨印章) */}
-                <div className="w-32 h-32 rounded-full border-2 border-paper-wash group-hover:border-cinnabar overflow-hidden mb-4 transition-all duration-700 group-hover:scale-105 shadow-inner bg-paper-cooked relative flex items-center justify-center">
+                <div className="w-28 h-28 rounded-full border-2 border-paper-wash group-hover:border-cinnabar overflow-hidden mt-1 mb-3 transition-all duration-700 group-hover:scale-105 shadow-inner bg-paper-cooked relative flex items-center justify-center">
                   {isSuShi ? (
                     <>
                       {/* 图 1 (默认态)：低头看书 */}
@@ -79,29 +79,29 @@ export const SagePantheon: React.FC<SagePantheonProps> = ({ onSelectSage }) => {
                         className="absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-700 ease-in-out opacity-0 group-hover:opacity-100"
                       />
                       <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent pointer-events-none z-20" />
-                      <span className="absolute bottom-2 z-20 text-[11px] font-archaic text-paper-raw tracking-widest transition-all duration-500 group-hover:text-amber-200">
+                      <span className="absolute bottom-1.5 z-20 text-[10px] font-archaic text-paper-raw tracking-widest transition-all duration-500 group-hover:text-amber-200">
                         <span className="group-hover:hidden">✦ 沉吟展读</span>
                         <span className="hidden group-hover:inline">✦ 抬首相望</span>
                       </span>
                     </>
                   ) : (
-                    <span className="text-5xl font-brush text-ink-thick group-hover:text-cinnabar transition">
+                    <span className="text-4xl font-brush text-ink-thick group-hover:text-cinnabar transition">
                       {author.name.slice(-1)}
                     </span>
                   )}
                 </div>
 
-                <h3 className="text-2xl font-bold font-song tracking-widest text-ink-burnt group-hover:text-cinnabar transition">
+                <h3 className="text-xl font-bold font-song tracking-widest text-ink-burnt group-hover:text-cinnabar transition">
                   {author.name}
                 </h3>
-                <p className="text-xs font-archaic text-cinnabar mt-1">
+                <p className="text-[11px] font-archaic text-cinnabar mt-0.5">
                   {author.courtesyName ? `字${author.courtesyName}` : ''} {author.artName ? `· 号${author.artName}` : ''}
                 </p>
-                <p className="text-xs font-song text-ink-light mt-2.5 leading-relaxed line-clamp-2 px-1">
+                <p className="text-xs font-song text-ink-light mt-2 leading-relaxed line-clamp-2 px-1">
                   {author.biographySummary}
                 </p>
 
-                <div className="mt-5 px-4 py-1.5 rounded-full border border-cinnabar/60 group-hover:bg-cinnabar group-hover:text-paper-raw text-xs font-brush text-cinnabar transition-all flex items-center gap-1.5 shadow-xs">
+                <div className="mt-4 px-3.5 py-1 rounded-full border border-cinnabar/60 group-hover:bg-cinnabar group-hover:text-paper-raw text-xs font-brush text-cinnabar transition-all flex items-center gap-1 shadow-xs">
                   <span>启封生命短剧</span>
                   <span className="text-xs">➔</span>
                 </div>
